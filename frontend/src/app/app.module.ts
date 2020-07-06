@@ -1,30 +1,40 @@
+
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { AppRoutingModule } from './app-routing.module';
+//RUTAS
+import { APP_ROUTES } from './app-routing.module';
+
+
+//MODULOS
+import { PaginaModule } from './paginas/paginas.module';
+
+
+//SERVICIOS
+import { ServiceModule } from './services/service.module';
+
+
+//COMPONENTES
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
-import { Pagina404Component } from './shared/pagina404/pagina404.component';
-import { DashboardComponent } from './paginas/dashboard/dashboard.component';
-import { ProgressComponent } from './paginas/progress/progress.component';
-import { HeaderComponent } from './shared/header/header.component';
-import { SidebarComponent } from './shared/sidebar/sidebar.component';
-import { BreadcrumbsComponent } from './shared/breadcrumbs/breadcrumbs.component';
+import { RegistroComponent } from './login/registro.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    Pagina404Component,
-    DashboardComponent,
-    ProgressComponent,
-    HeaderComponent,
-    SidebarComponent,
-    BreadcrumbsComponent
+    RegistroComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    APP_ROUTES,
+    PaginaModule,
+    ReactiveFormsModule,
+    FormsModule,
+    ServiceModule
   ],
   providers: [],
   bootstrap: [AppComponent]

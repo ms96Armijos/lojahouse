@@ -1,0 +1,24 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Steeven Armijos",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "generate-password": "^1.5.1",
+    "mongoose": "^5.9.21",
+    "mongoose-unique-validator": "^2.0.3",
+    "nodemailer": "^6.4.10"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
