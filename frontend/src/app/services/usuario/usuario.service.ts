@@ -19,7 +19,11 @@ export class UsuarioService {
 
   login(usuario: Usuario){
     const url = URL_SERVICIOS + '/login';
-    return this.http.post(url, usuario);
+    return this.http.post(url, usuario)
+    .pipe(map( (resp: any) => {
+
+      swal('Bienvenido!', 'success');
+  }));
   }
 
 
@@ -28,7 +32,7 @@ export class UsuarioService {
 
     return this.http.post(url, usuario)
     .pipe(map( (resp: any) => {
-      swal('Tu cuenta ha sido creada', 'Se ha enviado la contraseña a tu correo electrónico', 'success');
+      swal('Tu cuenta ha sido creada\n' + usuario.nombre, 'Se ha enviado la contraseña a tu correo electrónico', 'success');
   }));
   }
 }

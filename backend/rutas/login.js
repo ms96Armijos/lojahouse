@@ -1,5 +1,7 @@
 let express = require("express");
 let bcrypt = require("bcryptjs");
+let jwt = require('jsonwebtoken');
+let SEMILLA = require('../config/config').SEMILLATOKEN;
 
 let app = express();
 
@@ -38,10 +40,16 @@ app.post('/', (req, res) => {
 
         usuarioDB.password=':)';
 
+
+        //CREANDO UN TOKEN
+
+        let tokenUsuario = jwt.sign({usuario: usuarioDB}, SEMILLA, {expiresIn: 28800}); //DURACION DE 8 HORAS EL TOKEN
+
         res.status(200).json({
             ok: true,
             mensaje: 'Login correcto',
             usuario: usuarioDB,
+            token: tokenUsuario,
             id: usuarioDB._id
           });
     });

@@ -2,6 +2,8 @@ let express = require("express");
 let bcrypt = require("bcryptjs");
 let generarPassword = require("generate-password");
 let nodemailer = require('nodemailer');
+let jwt = require('jsonwebtoken');
+let mdwareAutenticacion = require('../middlewares/autenticacion');
 
 let app = express();
 
@@ -9,10 +11,7 @@ let Usuario = require("../modelos/usuario");
 
 //OBTENER TODOS LOS USUARIOS
 app.get("/", (req, res, next) => {
-  Usuario.find(
-    {},
-    "nombre apellido correo imagen cedula movil convencional estado rol"
-  ).exec((err, usuarios) => {
+  Usuario.find({}, "nombre apellido correo imagen cedula movil convencional estado rol").exec((err, usuarios) => {
     if (err) {
       return res.status(500).json({
         ok: false,
@@ -28,10 +27,16 @@ app.get("/", (req, res, next) => {
   });
 });
 
+
+
+
+
+
+
 //ACTUALIZAR UN NUEVO USUARIO
-app.put("/:id", (req, res) => {
+app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
   let id = req.params.id;
-  const {nombre, apellido, correo, cedula, movil, convencional, estado, rol} = req.body;
+  const { nombre, apellido, correo, cedula, movil, convencional, estado, rol } = req.body;
 
   Usuario.findById(id, (err, usuario) => {
     if (err) {
@@ -86,24 +91,24 @@ app.post("/", (req, res) => {
   });
 
   let transporter = nodemailer.createTransport({
-        service: 'Gmail',
-        auth: {
-            user: 'testplagios@gmail.com',
-            pass: 'plagios123'
-        }
-      });
+    service: 'Gmail',
+    auth: {
+      user: 'testplagios@gmail.com',
+      pass: 'plagios123'
+    }
+  });
 
 
-// Definimos el email
-var mailOptions = {
-  from: 'testplagios@gmail.com',
-  to: body.correo,
-  subject: 'Generaciónde contraseña',
-  html: `
+  // Definimos el email
+  let mailOptions = {
+    from: 'testplagios@gmail.com',
+    to: body.correo,
+    subject: 'Generaciónde contraseña',
+    html: `
   <table border="0" cellpadding="0" cellspacing="0" width="600px" background-color="#2d3436" bgcolor="#2d3436">
     <tr height="200px">
       <td bgcolor="" width="600"px>
-        <h1 style="color: #fff; text-align:center">Bienvenido ${body.nombre+' '+body.apellido}</h1>
+        <h1 style="color: #fff; text-align:center">Bienvenido ${body.nombre + ' ' + body.apellido}</h1>
         <p style="color:#fff; text-align:center">
           <span style:"color: #e84393">Tu contraseña temporal es: ${passwordGenerada}</span>
         </p>
@@ -118,19 +123,8 @@ var mailOptions = {
 
   </table>
   `
-};
+  };
 
-// Enviamos el email
-transporter.sendMail(mailOptions, function(error, info){
-  if (error){
-      console.log(error);
-      res.send(500, error.message);
-  } else {
-      console.log("Email sent");
-      res.status(200).json(req.body);
-  }
-});
-  
   let usuario = new Usuario({
     nombre: body.nombre,
     apellido: body.apellido,
@@ -151,18 +145,29 @@ transporter.sendMail(mailOptions, function(error, info){
         mensaje: "Error al crear usuario",
         errors: err,
       });
-      
+
     }
+
     res.status(201).json({
       ok: true,
       usuario: usuarioGuardado,
-      //password: passwordGenerada
+    });
+
+    // Enviamos el email
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+        res.send(500, error.message);
+      } else {
+        console.log("Correo Electrónico enviado satisfactoriamente: ", req.body.nombre);
+        res.status(200).json(req.bodys);
+      }
     });
   });
 });
 
 //ELIMINAR UN USUARIO
-app.delete("/:id", (req, res) => {
+app.delete("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
   let id = req.params.id;
 
   Usuario.findByIdAndRemove(id, (err, usuarioBorrado) => {

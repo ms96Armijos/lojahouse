@@ -56,6 +56,11 @@ export class RegistroComponent implements OnInit {
       this.forma.value.rol
     );
 
+    /*if (usuario.correo === this.forma.value.correo){
+      swal.default('Lo sentimos...', 'El correo que intentas registrar ya existe');
+      return;
+    }*/
+
     this._usuarioService.crearUsuario(usuario)
     .subscribe(resp => {
       this.router.navigate(['/login']);
