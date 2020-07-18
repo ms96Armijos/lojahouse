@@ -27,9 +27,9 @@ export class RegistroComponent implements OnInit {
 
     this.forma = new FormGroup({
       nombre: new FormControl(null, Validators.required),
-      apellido: new FormControl(null, [Validators.required, Validators.email]),
+      apellido: new FormControl(null, Validators.required),
       movil: new FormControl(null, Validators.required),
-      correo: new FormControl(null, Validators.required),
+      correo: new FormControl(null, [Validators.required, Validators.email]),
       rol: new FormControl(null, Validators.required),
     });
 

@@ -1,3 +1,42 @@
 #themecolors a {
   cursor: pointer;
 }
+.pointer:hover {
+    color: #fafafa;
+    cursor: pointer !important;
+}
+.w150{
+  width: 150px;
+}
+
+@media screen and (max-width: 320px) {
+  table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  table {
+      width:100%;
+  }
+  tr:nth-of-type(2n) {
+      background-color: inherit;
+  }
+  tr th:first-child {
+      background: #f0f0f0;
+      font-weight:bold;
+      font-size:1.3em;
+      display: block;
+
+  }
+  tbody td {
+      display: block;
+      text-align:center;
+  }
+  tbody td:before {
+      content: attr(data-th);
+      display: block;
+      text-align:center;
+  }
+}

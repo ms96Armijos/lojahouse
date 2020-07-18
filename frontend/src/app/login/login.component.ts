@@ -3,6 +3,7 @@ import { UsuarioService } from './../services/usuario/usuario.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
+import * as swal from 'sweetalert';
 
 //LLAMAR UNA FUNCION DE JQUERY FUERA DE ANGULAR
 declare function init_plugins();
@@ -23,12 +24,15 @@ export class LoginComponent implements OnInit {
     if (forma.invalid){
       return;
     }
+
     const usuario = new Usuario(null, null, null, forma.value.correo, null, forma.value.password, null, null, null, null, null);
     this._usuarioService.login(usuario)
     .subscribe( resp => {
       this.router.navigate(['/dashboard']);
-      console.log(resp);
+
     });
     //this.router.navigate(['/dashboard']);
+    //console.log(usuario);
+
   }
 }

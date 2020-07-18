@@ -21,6 +21,11 @@ app.use(express.json());
 //IMPORTAR RUTAS
 let usuarioRutas = require('./rutas/usuario');
 let loginRutas = require('./rutas/login');
+let inmuebleRutas = require('./rutas/inmueble');
+let visitaRutas = require('./rutas/visita');
+let busquedaRutas = require('./rutas/busqueda');
+let uploadRutas = require('./rutas/upload');
+let imagenesRutas = require('./rutas/imagenes');
 let appRutas = require('./rutas/app');
 
 
@@ -38,7 +43,12 @@ mongoose.connection.openUri("mongodb://localhost:27017/lojahouseDB",
 
 //RUTAS
 app.use('/usuario', usuarioRutas);
+app.use('/inmueble', inmuebleRutas);
+app.use('/visita', visitaRutas);
 app.use('/login', loginRutas);
+app.use('/busqueda', busquedaRutas);
+app.use('/upload', uploadRutas);
+app.use('/img',imagenesRutas);
 app.use('/', appRutas);
 
 

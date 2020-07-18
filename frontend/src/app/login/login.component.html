@@ -3,13 +3,23 @@
     <section id="wrapper" class="login-register login-sidebar" style="background-image:url(assets/images/background/login-register.jpg);">
       <div class="login-box card">
           <div class="card-body">
-              <form ngNativeValidate #f="ngForm" class="form-horizontal form-material" (ngSubmit)="ingresar(f)">
+              <form  #f="ngForm" class="form-horizontal form-material" (ngSubmit)="ingresar(f)">
                   <a href="javascript:void(0)" class="text-center db"><img src="assets/images/logo-icon.png" alt="Home" /><br/><img src="assets/images/logo-text.png" alt="Home" /></a>
-                  <div class="form-group m-t-40">
-                      <div class="col-xs-12">
-                          <input ngModel name="correo" class="form-control" type="email" required placeholder="Correo Electrónico">
+
+                  <span *ngIf="f.submitted && f.controls['correo'].errors"
+                  class="text-danger animated fadeIn">El correo es obligatorio</span>
+
+                  <div class="form-group m-t-20">
+                    <div class="col-xs-12">
+                          <input ngModel name="correo" class="form-control" type="email" required email placeholder="Correo Electrónico">
                       </div>
                   </div>
+
+
+                  <span *ngIf="f.submitted && f.controls['password'].errors"
+                  class="text-danger animated fadeIn">La contraseña es obligatoria</span>
+
+
                   <div class="form-group">
                       <div class="col-xs-12">
                           <input ngModel name="password" class="form-control" type="password" required placeholder="Contraseña">

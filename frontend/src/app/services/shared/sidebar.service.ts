@@ -16,6 +16,14 @@ export class SidebarService {
         { titulo: ' Alquilar inmueble ', url: '/alquilar-inmueble' }
       ],
     },
+    {
+      titulo: 'Configuraciones',
+      icono: 'mdi mdi-folder-lock-open',
+      submenu: [
+        {titulo: 'Usuarios', url: '/usuarios'},
+        {titulo: 'Servicios', url: '/servicios'}
+      ]
+    }
   ];
 
   constructor() {}

@@ -11,7 +11,14 @@ let Usuario = require("../modelos/usuario");
 
 //OBTENER TODOS LOS USUARIOS
 app.get("/", (req, res, next) => {
-  Usuario.find({}, "nombre apellido correo imagen cedula movil convencional estado rol").exec((err, usuarios) => {
+
+  let desde = req.query.desde || 0;
+  desde = Number(desde);
+
+  Usuario.find({}, "nombre apellido imagen movil estado rol")
+  .skip(desde)
+  .limit(5)
+  .exec((err, usuarios) => {
     if (err) {
       return res.status(500).json({
         ok: false,
@@ -20,23 +27,29 @@ app.get("/", (req, res, next) => {
       });
     }
 
-    res.status(200).json({
-      ok: true,
-      usuarios: usuarios,
+    Usuario.count({}, (err, conteo) => {
+      
+      if (err) {
+        return res.status(500).json({
+          ok: false,
+          mensaje: "Error contando usuarios",
+          errors: err,
+        });
+      }
+
+      res.status(200).json({
+        ok: true,
+        usuarios: usuarios,
+        total: conteo
+      });
     });
   });
 });
 
-
-
-
-
-
-
-//ACTUALIZAR UN NUEVO USUARIO
+//ACTUALIZAR UN USUARIO
 app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
   let id = req.params.id;
-  const { nombre, apellido, correo, cedula, movil, convencional, estado, rol } = req.body;
+  const { nombre, apellido, correo, cedula, movil, convencional } = req.body;
 
   Usuario.findById(id, (err, usuario) => {
     if (err) {
@@ -61,10 +74,9 @@ app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
     usuario.cedula = cedula;
     usuario.movil = movil;
     usuario.convencional = convencional;
-    usuario.estado = estado;
-    usuario.rol = rol;
 
     usuario.save((err, usuarioGuardado) => {
+
       if (err) {
         return res.status(400).json({
           ok: false,
@@ -103,7 +115,7 @@ app.post("/", (req, res) => {
   let mailOptions = {
     from: 'testplagios@gmail.com',
     to: body.correo,
-    subject: 'Generaciónde contraseña',
+    subject: 'Generación de contraseña',
     html: `
   <table border="0" cellpadding="0" cellspacing="0" width="600px" background-color="#2d3436" bgcolor="#2d3436">
     <tr height="200px">
@@ -160,7 +172,7 @@ app.post("/", (req, res) => {
         res.send(500, error.message);
       } else {
         console.log("Correo Electrónico enviado satisfactoriamente: ", req.body.nombre);
-        res.status(200).json(req.bodys);
+        res.status(200).json(req.body);
       }
     });
   });
@@ -193,5 +205,6 @@ app.delete("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
     });
   });
 });
+
 
 module.exports = app;

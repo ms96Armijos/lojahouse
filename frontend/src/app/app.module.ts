@@ -20,13 +20,14 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RegistroComponent } from './login/registro.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-
+import { RecuperarpasswordComponent } from './login/recuperarpassword.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    RegistroComponent
+    RegistroComponent,
+    RecuperarpasswordComponent
   ],
   imports: [
     BrowserModule,

@@ -25,7 +25,7 @@ app.post('/', (req, res) => {
         if(!usuarioDB){
                 return res.status(400).json({
                   ok: false,
-                  mensaje: 'Los datos ingresados están incorrectos - correo',
+                  mensaje: 'Los datos ingresados están incorrectos',
                   errors: err,
                 });
         }
@@ -33,7 +33,7 @@ app.post('/', (req, res) => {
         if(!bcrypt.compareSync(body.password, usuarioDB.password)){
                 return res.status(400).json({
                   ok: false,
-                  mensaje: 'Los datos ingresados están incorrectos - password',
+                  mensaje: 'Los datos ingresados están incorrectos',
                   errors: err,
                 });
         }

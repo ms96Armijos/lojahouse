@@ -11,6 +11,9 @@
         <a href="javascript:void(0)" class="text-center db"><img src="assets/images/logo-icon.png"
             alt="Home" /><br /><img src="assets/images/logo-text.png" alt="Home" /></a>
 
+            <span *ngIf="forma.controls['nombre'].errors"
+                  class="text-danger animated fadeIn">Los nombre son obligatorios</span>
+
         <div class="form-group m-t-10">
           <div class="col-xs-12">
             <label class="control-label"><b>Nombres:</b></label>
@@ -18,6 +21,10 @@
               placeholder="Nombres" />
           </div>
         </div>
+
+        <span *ngIf="forma.controls['apellido'].errors"
+                  class="text-danger animated fadeIn">Los apellidos son obligatorios</span>
+
         <div class="form-group m-t-10">
           <div class="col-xs-12">
             <label class="control-label"><b>Apellidos:</b></label>
@@ -25,6 +32,10 @@
               placeholder="Apellidos" />
           </div>
         </div>
+
+        <span *ngIf="forma.controls['movil'].errors"
+                  class="text-danger animated fadeIn">El celular es obligatorio</span>
+
         <div class="form-group m-t-10">
           <div class="col-xs-12">
             <label class="control-label"><b>Celular:</b></label>
@@ -32,10 +43,14 @@
               placeholder="Celular/Móvil" />
           </div>
         </div>
+
+        <span *ngIf="forma.controls['correo'].errors"
+                  class="text-danger animated fadeIn">El correo es obligatorio</span>
+
         <div class="form-group m-t-10">
           <div class="col-xs-12">
             <label class="control-label"><b>Correo Electrónico:</b></label>
-            <input formControlName="correo" name="correo" class="form-control m-t-10" type="email" required
+            <input formControlName="correo" name="correo" class="form-control m-t-10" type="email" required email
               placeholder="Correo Electrónico" />
           </div>
         </div>
@@ -47,8 +62,8 @@
           <div class="col-6 m-t-10">
             <select formControlName="rol" name="rol" class="browser-default custom-select">
               <option selected>Seleccionar</option>
-              <option value="ARRENDATARIO_ROL">ARRENDADOR</option>
-              <option value="ARRENDADOR_ROL">ARRENDATARIO</option>
+              <option value="ARRENDATARIO">ARRENDADOR</option>
+              <option value="ARRENDADOR">ARRENDATARIO</option>
             </select>
           </div>
         </div>

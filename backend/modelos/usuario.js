@@ -4,8 +4,13 @@ let uniqueValidator = require('mongoose-unique-validator');
 let Schema = mongoose.Schema;
 
 let rolesValidos = {
-    values: ['ADMIN_ROL', 'ARRENDATARIO_ROL', 'ARRENDADOR_ROL'],
+    values: ['ADMINISTRADOR', 'ARRENDATARIO', 'ARRENDADOR'],
     message: '{VALUE} no es un rol permitido'
+}
+
+let estadosValidos = {
+    values: ['ACTIVADO', 'DESACTIVADO'],
+    message: '{VALUE} no es un estado permitido'
 }
 
 
@@ -19,8 +24,8 @@ let usuarioSchema = new Schema({
     cedula: {type: String, required: false},
     movil: {type: String, required: [true, 'El número de celular es necesario']},
     convencional: {type: String, required: false},
-    estado: {type: String,required:false, default: 'DESACTIVADO'},
-    rol: {type: String, required: true, default: 'ADMIN_ROL', enum: rolesValidos}
+    estado: {type: String,required:false, default: 'DESACTIVADO', enum: estadosValidos},
+    rol: {type: String, required: true, default: 'ADMINISTRADOR', enum: rolesValidos}
 
 });
 
