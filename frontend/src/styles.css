@@ -8,6 +8,13 @@
 .w150{
   width: 150px;
 }
+.w50{
+  width: 50px;
+}
+
+.w70{
+  width: 70px;
+}
 
 @media screen and (max-width: 320px) {
   table {

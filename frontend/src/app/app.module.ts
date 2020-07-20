@@ -22,6 +22,9 @@ import { RegistroComponent } from './login/registro.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RecuperarpasswordComponent } from './login/recuperarpassword.component';
 
+
+
+
 @NgModule({
   declarations: [
     AppComponent,

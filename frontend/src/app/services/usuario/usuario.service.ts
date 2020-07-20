@@ -59,7 +59,7 @@ export class UsuarioService {
    this.router.navigate(['/login']);
   }
 
-  //iQ1Od
+  //tivi
 
   login(usuario: Usuario) {
     const url = URL_SERVICIOS + '/login';
@@ -118,10 +118,15 @@ export class UsuarioService {
 
     return this.http.put(url, usuario).pipe(map( (resp: any) => {
 
-      this.guardarDatosEnStorage(resp.usuario._id, this.token, usuario);
+      if (usuario._id === this.usuario._id){
+        const usuarioDB = resp.usuario;
+        this.guardarDatosEnStorage(usuarioDB._id, this.token, usuarioDB);
+      }
+
+
       swal(
-        'Tu perfil ha sido actualizado\n' + usuario.nombre,
-        'Se ha actualizado la información de tu perfil',
+        'Usuario actualizado\n' + usuario.nombre,
+        'Se ha actualizado la información del usuario correctamente',
         'success'
       );
       return true;
@@ -163,8 +168,19 @@ cargarUsuarios( desde: number = 0){
 buscarUsuarios(termino: string){
     const url = URL_SERVICIOS + '/busqueda/coleccion/usuarios/' + termino;
     return this.http.get(url)
-    .pipe(map((resp: any) => { resp.usuarios }));
+    .pipe(map((resp: any) => resp.usuarios));
 }
 
+borrarUsuario(id: string){
+  let url = URL_SERVICIOS + '/usuario/' + id;
+  url += '?token=' + this.token;
+  return this.http.delete( url )
+  .pipe(
+    map((resp: any) => {
+      swal('Usuario borrado', 'El usuario ha sido eliminado ', 'success');
+      return true;
+    })
+  );
+}
 
 }

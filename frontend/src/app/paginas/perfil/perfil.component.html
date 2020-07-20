@@ -4,13 +4,12 @@
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">Perfil del usuario</h4>
-        <h6 class="card-subtitle">Actualizar información</h6>
-
-        <form ngNativeValidate #f="ngForm" class="form p-t-20" (ngSubmit)="ActualizarInformacionPerfil(f.value)" >
+        <h6 class="card-subtitle">Rol: {{usuario.rol}}</h6>
+        <form ngNativeValidate #f="ngForm" class="form p-t-20 " (ngSubmit)="ActualizarInformacionPerfil(f.value)">
 
 
           <div class="row ">
-            <div class="col-6 m-t-10">
+            <div class="col-6">
               <div class="col-xs-6 ">
 
 
@@ -24,7 +23,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-6 m-t-10">
+            <div class="col-6">
               <div class="form-group">
                 <label for="apellido">Apellidos</label>
                 <div class="input-group">
@@ -43,14 +42,16 @@
               <input [ngModel]="usuario.correo" name="correo" type="email" required class="form-control"
                 placeholder="Correo Electrónico">
             </div>
+            <small>El correo debe ser válido</small>
           </div>
+
+
 
           <div class="form-group">
             <label for="cedula">Cédula</label>
             <div class="input-group">
               <div class="input-group-addon"><i class="ti-id-badge"></i></div>
-              <input [ngModel]="usuario.cedula" name="cedula" type="text" required class="form-control"
-                placeholder="Cédula">
+              <input [ngModel]="usuario.cedula" name="cedula" type="text" class="form-control" placeholder="Cédula">
             </div>
           </div>
 
@@ -73,7 +74,8 @@
                 <label for="convencional">Convencional</label>
                 <div class="input-group">
                   <div class="input-group-addon"><i class="ti-mobile"></i></div>
-                  <input [ngModel]="usuario.convencional" name="convencional" type="text" required class="form-control" placeholder="Convencional">
+                  <input [ngModel]="usuario.convencional" name="convencional" type="text" class="form-control"
+                    placeholder="Convencional">
                 </div>
               </div>
             </div>
@@ -93,7 +95,7 @@
         <h4 class="card-title">Foto del usuario</h4>
         <h6 class="card-subtitle">Actualizar foto</h6>
 
-        <img *ngIf="!imagenTemporal"  [src]="usuario.imagen | imagen" class="w150" alt="">
+        <img *ngIf="!imagenTemporal" [src]="usuario.imagen | imagen" class="w150" alt="">
         <img *ngIf="imagenTemporal" [src]="imagenTemporal" class="w150" alt="">
         <br>
         <br>
@@ -102,7 +104,8 @@
         <br>
         <br>
 
-        <button (click)='cambiarImagen()' [disabled]='!subirImagen' type="submit" class="btn btn-block btn-success waves-effect waves-light m-r-10">
+        <button (click)='cambiarImagen()' [disabled]='!subirImagen' type="submit"
+          class="btn btn-block btn-success waves-effect waves-light m-r-10">
           <i class="fa fa-save"> </i>
           Actualizar Foto</button>
 

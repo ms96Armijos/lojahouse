@@ -33,7 +33,7 @@
             <th>Imagen</th>
             <th>Nombre</th>
             <th>Apellido</th>
-            <th>Móvil</th>
+            <th>Celular</th>
             <th>Rol</th>
             <th>Estado</th>
             <th>Acciones</th>
@@ -42,16 +42,21 @@
 
         <tbody>
           <tr *ngFor="let usuario of usuarios" >
-            <td></td>
+            <td class="w70"><img [src]="usuario.imagen | imagen" alt="" class="w50 img-circle"></td>
             <td>{{usuario.nombre}}</td>
             <td>{{usuario.apellido}}</td>
             <td>{{usuario.movil}}</td>
             <td>{{usuario.rol}}</td>
-            <td>{{usuario.estado}}</td>
             <td>
-              <button class="btn btn-primary"><i class="fa fa-save"></i></button>
+              <select [(ngModel)]="usuario.estado" name="estado" class="form-control">
+                <option value="ACTIVADO">ACTIVADO</option>
+                <option value="DESACTIVADO">DESACTIVADO</option>
+              </select>
+            </td>
+            <td>
+              <button (click)="guardarUsuario( usuario )" class="btn btn-primary"><i class="fa fa-save"></i></button>
 
-              <button class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
+              <button (click)="borrarUsuario( usuario )" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
             </td>
           </tr>
         </tbody>

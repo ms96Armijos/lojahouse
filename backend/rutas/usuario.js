@@ -15,41 +15,41 @@ app.get("/", (req, res, next) => {
   let desde = req.query.desde || 0;
   desde = Number(desde);
 
-  Usuario.find({}, "nombre apellido imagen movil estado rol")
-  .skip(desde)
-  .limit(5)
-  .exec((err, usuarios) => {
-    if (err) {
-      return res.status(500).json({
-        ok: false,
-        mensaje: "Error cargando usuario",
-        errors: err,
-      });
-    }
-
-    Usuario.count({}, (err, conteo) => {
-      
+  Usuario.find({}, "nombre apellido correo imagen movil estado rol")
+    .skip(desde)
+    .limit(5)
+    .exec((err, usuarios) => {
       if (err) {
         return res.status(500).json({
           ok: false,
-          mensaje: "Error contando usuarios",
+          mensaje: "Error cargando usuario",
           errors: err,
         });
       }
 
-      res.status(200).json({
-        ok: true,
-        usuarios: usuarios,
-        total: conteo
+      Usuario.count({}, (err, conteo) => {
+
+        if (err) {
+          return res.status(500).json({
+            ok: false,
+            mensaje: "Error contando usuarios",
+            errors: err,
+          });
+        }
+
+        res.status(200).json({
+          ok: true,
+          usuarios: usuarios,
+          total: conteo
+        });
       });
     });
-  });
 });
 
 //ACTUALIZAR UN USUARIO
 app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
   let id = req.params.id;
-  const { nombre, apellido, correo, cedula, movil, convencional } = req.body;
+  const { nombre, apellido, correo, cedula, movil, convencional, estado } = req.body;
 
   Usuario.findById(id, (err, usuario) => {
     if (err) {
@@ -74,6 +74,9 @@ app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
     usuario.cedula = cedula;
     usuario.movil = movil;
     usuario.convencional = convencional;
+    usuario.estado = estado;
+
+
 
     usuario.save((err, usuarioGuardado) => {
 
