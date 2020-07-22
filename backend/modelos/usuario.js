@@ -9,7 +9,7 @@ let rolesValidos = {
 }
 
 let estadosValidos = {
-    values: ['ACTIVADO', 'DESACTIVADO'],
+    values: ['true', 'false'],
     message: '{VALUE} no es un estado permitido'
 }
 
@@ -24,7 +24,7 @@ let usuarioSchema = new Schema({
     cedula: {type: String, required: false},
     movil: {type: String, required: [true, 'El número de celular es necesario']},
     convencional: {type: String, required: false},
-    estado: {type: String,required:false, default: 'DESACTIVADO', enum: estadosValidos},
+    estado: {type: String,required:false, default: 'false', enum: estadosValidos},
     rol: {type: String, required: true, default: 'ADMINISTRADOR', enum: rolesValidos}
 
 });

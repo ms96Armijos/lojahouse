@@ -53,7 +53,7 @@ export class UsuariosComponent implements OnInit {
 
   buscarUsuario(termino: string) {
 
-    if ( termino.length <= 0){
+    if (termino.length <= 0) {
       this.cargarUsuarios();
       return;
     }
@@ -62,15 +62,15 @@ export class UsuariosComponent implements OnInit {
 
     this._usuarioService.buscarUsuarios(termino)
       .subscribe((usuarios: Usuario[]) => {
-
+        console.log(termino);
         this.usuarios = usuarios;
         this.cargando = false;
       });
   }
 
-  borrarUsuario( usuario: Usuario ){
+  borrarUsuario(usuario: Usuario) {
 
-    if ( usuario._id === this._usuarioService.usuario._id){
+    if (usuario._id === this._usuarioService.usuario._id) {
       swal('Error al borrar el usuario', 'No se puede borrar el usuario: ' + usuario.nombre, 'error');
       return;
     }
@@ -85,20 +85,49 @@ export class UsuariosComponent implements OnInit {
       ],
       dangerMode: true,
     })
-    .then( borrar => {
-      if (borrar){
-        this._usuarioService.borrarUsuario(usuario._id)
-        .subscribe( borrado => {
-            this.cargarUsuarios();
-        });
-      }
-    });
+      .then(borrar => {
+        if (borrar) {
+          this._usuarioService.borrarUsuario(usuario._id)
+            .subscribe(borrado => {
+              this.cargarUsuarios();
+            });
+        }
+      });
 
   }
 
-  guardarUsuario( usuario: Usuario){
-    this._usuarioService.actualizarUsuario(usuario)
-    .subscribe();
+  guardarUsuario(usuario: Usuario) {
+
+    let estadoObtenido: string;
+
+    if (usuario.estado === 'true') {
+      estadoObtenido = 'DESACTIVADO';
+    } else {
+      estadoObtenido = 'ACTIVADO';
+    }
+
+    swal({
+      title: '¿Está seguro de realizar la siguiente acción?',
+      text: 'El usuario será: ' + estadoObtenido,
+      icon: 'warning',
+      buttons: [
+        'Cancelar',
+        'Aceptar'
+      ],
+      dangerMode: true,
+    }).then(borrar => {
+      if (borrar) {
+        if (usuario.estado === 'true') {
+          usuario.estado = 'false';
+        } else {
+          usuario.estado = 'true';
+        }
+
+        this._usuarioService.actualizarUsuario(usuario)
+          .subscribe();
+          this.toastr.success('Usuario ' + estadoObtenido);
+      }
+    });
   }
 
 }

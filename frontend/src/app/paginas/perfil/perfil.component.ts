@@ -27,12 +27,18 @@ export class PerfilComponent implements OnInit {
     this.usuario.nombre = usuario.nombre;
     this.usuario.apellido = usuario.apellido;
     this.usuario.correo = usuario.correo;
+    //this.usuario.password = usuario.password;
     this.usuario.movil = usuario.movil;
     this.usuario.convencional = usuario.convencional;
     this.usuario.cedula = usuario.cedula;
 
 
     this._usuarioService.actualizarUsuario(this.usuario).subscribe();
+    swal(
+      'Actualización exitosa',
+      'Se ha actualizado su información correctamente',
+      'success'
+    );
   }
 
   seleccionarImagen(archivo: File) {

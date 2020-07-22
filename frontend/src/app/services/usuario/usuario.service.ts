@@ -123,12 +123,6 @@ export class UsuarioService {
         this.guardarDatosEnStorage(usuarioDB._id, this.token, usuarioDB);
       }
 
-
-      swal(
-        'Usuario actualizado\n' + usuario.nombre,
-        'Se ha actualizado la información del usuario correctamente',
-        'success'
-      );
       return true;
     }),
     catchError((err) => {
@@ -148,7 +142,7 @@ export class UsuarioService {
     this.servicioSubirArchivo.subirArchivo(archivo, 'usuarios', id)
     .then( (resp: any) => {
       this.usuario.imagen = resp.usuario.imagen;
-      swal('Imagen actualizada', this.usuario.nombre, 'success');
+      swal('Imagen actualizada', 'Se ha actualizado su foto de perfil', 'success');
       this.guardarDatosEnStorage(id, this.token, this.usuario);
     })
     .catch(resp => {

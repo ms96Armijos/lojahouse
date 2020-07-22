@@ -93,8 +93,8 @@ function buscarVisitas(busqueda, expresionRegular) {
 }
 function buscarUsuarios(busqueda, expresionRegular) {
   return new Promise((resolve, reject) => {
-    Usuario.find({}, "nombre apellido correo rol estado")
-      .or([{ nombre: expresionRegular }, { correo: expresionRegular }])
+    Usuario.find({}, "correo movil estado rol")
+      .or([{ nombre: expresionRegular }, { apellido: expresionRegular }, { estado: expresionRegular }, { rol: expresionRegular }])
       .exec((err, usuarios) => {
         if (err) {
           reject("Error al cargar los usuarios", err);

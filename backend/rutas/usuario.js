@@ -27,7 +27,7 @@ app.get("/", (req, res, next) => {
         });
       }
 
-      Usuario.count({}, (err, conteo) => {
+      Usuario.countDocuments({}, (err, conteo) => {
 
         if (err) {
           return res.status(500).json({
@@ -49,7 +49,7 @@ app.get("/", (req, res, next) => {
 //ACTUALIZAR UN USUARIO
 app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
   let id = req.params.id;
-  const { nombre, apellido, correo, cedula, movil, convencional, estado } = req.body;
+  const { nombre, apellido, correo, password, cedula, movil, convencional, estado } = req.body;
 
   Usuario.findById(id, (err, usuario) => {
     if (err) {
@@ -71,11 +71,11 @@ app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
     usuario.nombre = nombre;
     usuario.apellido = apellido;
     usuario.correo = correo;
+    //usuario.password = bcrypt.hashSync(password, 10);
     usuario.cedula = cedula;
     usuario.movil = movil;
     usuario.convencional = convencional;
     usuario.estado = estado;
-
 
 
     usuario.save((err, usuarioGuardado) => {

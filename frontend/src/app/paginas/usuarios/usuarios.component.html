@@ -2,14 +2,15 @@
   <div class="col-12">
     <div class="card">
       <div class="card-body">
-        <input #input (keyup)="buscarUsuario(input.value)" type="text" class="form-control" placeholder="Buscar usuario...">
+        <input #input (keyup)="buscarUsuario(input.value)" type="text" class="form-control"
+          placeholder="Buscar usuario...">
       </div>
     </div>
   </div>
 </div>
 
 
-<div class="row animate fadeIn" *ngIf="cargando" >
+<div class="row animate fadeIn" *ngIf="cargando">
   <div class="col-sm-12">
     <div class="alert alert-warning text-center">
       <strong>Cargando...</strong>
@@ -30,9 +31,7 @@
       <table class="table table-hover">
         <thead>
           <tr>
-            <th>Imagen</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
+            <th>Nombre de usuario</th>
             <th>Celular</th>
             <th>Rol</th>
             <th>Estado</th>
@@ -41,22 +40,35 @@
         </thead>
 
         <tbody>
-          <tr *ngFor="let usuario of usuarios" >
-            <td class="w70"><img [src]="usuario.imagen | imagen" alt="" class="w50 img-circle"></td>
-            <td>{{usuario.nombre}}</td>
-            <td>{{usuario.apellido}}</td>
+          <tr *ngFor="let usuario of usuarios">
+            <td>{{usuario.correo}}</td>
             <td>{{usuario.movil}}</td>
             <td>{{usuario.rol}}</td>
-            <td>
-              <select [(ngModel)]="usuario.estado" name="estado" class="form-control">
-                <option value="ACTIVADO">ACTIVADO</option>
-                <option value="DESACTIVADO">DESACTIVADO</option>
-              </select>
+            <td>{{usuario.estado=='true'? 'ACTIVADO' : 'DESACTIVADO'}}
+
+
+
+             <!-- <select [(ngModel)]="usuario.estado" name="estado" class="form-control">
+                <option value="true">ACTIVADO</option>
+                <option value="false">DESACTIVADO</option>
+              </select>-->
+
+
+              <!-- Material switch
+              <div class="switch">
+                <label>
+                  DESACTIVADO
+                  <input [(ngModel)]="usuario.estado" name="estado"  type="checkbox" checked *ngIf="usuario.estado=='true'">
+                  <input [(ngModel)]="usuario.estado" name="estado" type="checkbox">
+                  <span class="lever"></span> ACTIVADO
+                </label>
+              </div>-->
+
             </td>
             <td>
-              <button (click)="guardarUsuario( usuario )" class="btn btn-primary"><i class="fa fa-save"></i></button>
+              <button  (click)="guardarUsuario( usuario )" class="btn btn-primary">{{usuario.estado=='false'? 'ACTIVAR' : 'DESACTIVAR'}}</button>
 
-              <button (click)="borrarUsuario( usuario )" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
+             <!-- <button (click)="borrarUsuario( usuario )" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>-->
             </td>
           </tr>
         </tbody>
