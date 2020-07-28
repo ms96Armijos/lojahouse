@@ -1,3 +1,4 @@
+import { RecuperarpasswordComponent } from '../login/cambiarpassword.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { PerfilComponent } from './perfil/perfil.component';
 import { LoginGuardGuard } from '../services/service.index';
@@ -16,9 +17,10 @@ const paginasRoutes: Routes = [
     component: PaginasComponent,
     canActivate: [LoginGuardGuard],
     children: [
-      { path: 'dashboard', component: DashboardComponent, data: {titulo: 'Dashboard'} },
+      { path: 'dashboard', component: DashboardComponent, data: {titulo: 'ARRENDADOR'} },
       { path: 'progress', component: ProgressComponent, data: {titulo: 'Progress'} },
       { path: 'perfil', component: PerfilComponent, data: {titulo: 'Perfil de usuario'} },
+      { path: 'cambiarpassword', component: RecuperarpasswordComponent, data: {titulo: 'Cambiar Contraseña'} },
 
       //CONFIGURACIONES:
       { path: 'usuarios', component: UsuariosComponent, data: {titulo: 'Configuración de usuario'} },

@@ -15,7 +15,7 @@ import { HttpClientModule } from '@angular/common/http';
     SidebarService,
     UsuarioService,
     LoginGuardGuard,
-    SubirArchivoService
+    SubirArchivoService,
   ],
 })
 export class ServiceModule {}

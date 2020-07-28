@@ -30,13 +30,13 @@ app.put("/", (req, res) => {
        // Definimos el email
   let mailOptions = {
     from: 'testplagios@gmail.com',
-    to: body.correo,
+    to: correo,
     subject: 'Actualización de contraseña',
     html: `
   <table border="0" cellpadding="0" cellspacing="0" width="600px" background-color="#2d3436" bgcolor="#2d3436">
     <tr height="200px">
       <td bgcolor="" width="600"px>
-        <h1 style="color: #fff; text-align:center">Se ha cambiado la contraseña del correo: ${correo}</h1>
+        <h1 style="color: #fff; text-align:center">Se ha actualizado la contraseña del usuario: ${correo}</h1>
         <p style="color:#fff; text-align:center">
           <span style:"color: #e84393">Tu contraseña temporal es: ${passwordGenerada}</span>
         </p>
@@ -53,7 +53,7 @@ app.put("/", (req, res) => {
   `
   };
 
-    Usuario.findById(correo, (err, usuario) => {
+    Usuario.findOne({correo}, (err, usuario) => {
       if (err) {
         return res.status(500).json({
           ok: false,
@@ -77,7 +77,7 @@ app.put("/", (req, res) => {
         if (err) {
           return res.status(400).json({
             ok: false,
-            mensaje: "Error al actualizar contraseña",
+            mensaje: "Error al resetear contraseña",
             errors: err,
           });
         }
@@ -88,7 +88,7 @@ app.put("/", (req, res) => {
         });
 
          // Enviamos el email
-        transporter.sendMail(mailOptions, function (error, info) {
+        transporter.sendMail(mailOptions, function (error) {
         if (error) {
           console.log(error);
           res.send(500, error.message);
@@ -101,3 +101,5 @@ app.put("/", (req, res) => {
       });
     });
   });
+  
+module.exports = app;

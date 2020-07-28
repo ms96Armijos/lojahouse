@@ -5,7 +5,7 @@ import { Injectable } from "@angular/core";
   providedIn: "root",
 })
 export class SubirArchivoService {
-  constructor() {}
+  constructor() { }
 
   subirArchivo(archivo: File, tipo: string, id: string) {
     return new Promise((resolve, reject) => {
@@ -13,7 +13,7 @@ export class SubirArchivoService {
       let peticion = new XMLHttpRequest();
 
       formData.append("imagen", archivo, archivo.name);
-      peticion.onreadystatechange = function() {
+      peticion.onreadystatechange = function () {
         if (peticion.readyState === 4) {
           if (peticion.status === 200) {
             resolve(JSON.parse(peticion.response));

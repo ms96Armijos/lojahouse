@@ -26,8 +26,6 @@ export class PerfilComponent implements OnInit {
   ActualizarInformacionPerfil(usuario: Usuario) {
     this.usuario.nombre = usuario.nombre;
     this.usuario.apellido = usuario.apellido;
-    this.usuario.correo = usuario.correo;
-    //this.usuario.password = usuario.password;
     this.usuario.movil = usuario.movil;
     this.usuario.convencional = usuario.convencional;
     this.usuario.cedula = usuario.cedula;

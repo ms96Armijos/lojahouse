@@ -27,34 +27,34 @@
   <div class="col-12">
     <div class="card-body">
       <h3 class="card-title">Usuarios registrados(<small>{{totalDeRegistros}}</small>)</h3>
+      <div class="table-responsive m-t-40">
+        <table class="table table-hover" style="width:100%">
+          <thead>
+            <tr>
+              <th>Nombre de usuario</th>
+              <th>Celular</th>
+              <th>Rol</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
 
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th>Nombre de usuario</th>
-            <th>Celular</th>
-            <th>Rol</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr *ngFor="let usuario of usuarios">
-            <td>{{usuario.correo}}</td>
-            <td>{{usuario.movil}}</td>
-            <td>{{usuario.rol}}</td>
-            <td>{{usuario.estado=='true'? 'ACTIVADO' : 'DESACTIVADO'}}
+          <tbody>
+            <tr *ngFor="let usuario of usuarios">
+              <td>{{usuario.correo}}</td>
+              <td>{{usuario.movil}}</td>
+              <td>{{usuario.rol}}</td>
+              <td>{{usuario.estado == 1 ? 'ACTIVADO' : 'DESACTIVADO'}}
 
 
 
-             <!-- <select [(ngModel)]="usuario.estado" name="estado" class="form-control">
+                <!-- <select [(ngModel)]="usuario.estado" name="estado" class="form-control">
                 <option value="true">ACTIVADO</option>
                 <option value="false">DESACTIVADO</option>
               </select>-->
 
 
-              <!-- Material switch
+                <!-- Material switch
               <div class="switch">
                 <label>
                   DESACTIVADO
@@ -64,16 +64,17 @@
                 </label>
               </div>-->
 
-            </td>
-            <td>
-              <button  (click)="guardarUsuario( usuario )" class="btn btn-primary">{{usuario.estado=='false'? 'ACTIVAR' : 'DESACTIVAR'}}</button>
+              </td>
+              <td>
+                <button (click)="guardarUsuario( usuario )" class="btn btn-primary btn-rounded">
+                  {{usuario.estado == 0 ? 'ACTIVAR' : 'DESACTIVAR'}}</button>
 
-             <!-- <button (click)="borrarUsuario( usuario )" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>-->
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
+                <!-- <button (click)="borrarUsuario( usuario )" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>-->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <button (click)="cambiarPaginacion(-5)" class="btn btn-secondary m-r-5">Anteriores</button>
       <button (click)="cambiarPaginacion(5)" class="btn btn-secondary">Siguientes</button>
     </div>

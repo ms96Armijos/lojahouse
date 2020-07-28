@@ -12,8 +12,8 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class UsuarioService {
-    usuario: Usuario;
-    token: string;
+  usuario: Usuario;
+  token: string;
 
 
 
@@ -22,17 +22,18 @@ export class UsuarioService {
   }
 
   //VERIFICAR SI EL USAURIO SE HA LOGUEADO EVALUANDO QUE EL TOKEN EXISTA
-  estaLogueado(){
-    return(this.token.length > 0) ? true : false;
+  estaLogueado() {
+    return (this.token.length > 0) ? true : false;
   }
 
-  //INICIALIZANDO AL LOCALSTORAGE
-  cargarStorage(){
 
-    if (localStorage.getItem('token')){
+
+  //INICIALIZANDO AL LOCALSTORAGE
+  cargarStorage() {
+    if (localStorage.getItem('token')) {
       this.token = localStorage.getItem('token');
       this.usuario = JSON.parse(localStorage.getItem('usuario'));
-    }else{
+    } else {
       this.token = '';
       this.usuario = null;
     }
@@ -47,19 +48,36 @@ export class UsuarioService {
     this.token = token;
   }
 
-
-  //FUNCIONA PARA SALIR DE LA APLICACION
-  logout(){
+  eliminarStorage() {
     this.token = '';
     this.usuario = null;
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');
     localStorage.removeItem('id');
-    swal('Hasta luego ', ' No olvides visitarnos de nuevo', 'success');
-   this.router.navigate(['/login']);
   }
 
-  //tivi
+  //FUNCIONA PARA SALIR DE LA APLICACION
+  logout() {
+
+    swal({
+      title: '¿Está seguro de salir de LojaHouse?',
+      text: 'Esperamos que regreses pronto',
+      icon: 'warning',
+      buttons: [
+        'Cancelar',
+        'Aceptar'
+      ],
+      dangerMode: true,
+    }).then(borrar => {
+      if (borrar) {
+        this.eliminarStorage();
+        swal('Hasta luego ', ' No olvides visitarnos de nuevo', 'success');
+        this.router.navigate(['/login']);
+      }
+    });
+  }
+
+  //Tivi1996
 
   login(usuario: Usuario) {
     const url = URL_SERVICIOS + '/login';
@@ -70,18 +88,18 @@ export class UsuarioService {
 
         const tipoUsuario = resp.usuario.rol;
 
-        switch ( tipoUsuario ){
+        switch (tipoUsuario) {
           case 'ADMINISTRADOR':
             swal('Bienvenido ' + resp.usuario.nombre + ' ' + resp.usuario.apellido,
-          'Eres el administrador de LojaHouse ', 'success');
+              'Eres el administrador de LojaHouse ', 'success');
             break;
           case 'ARRENDADOR':
             swal('Bienvenido ' + resp.usuario.nombre + ' ' + resp.usuario.apellido,
-          'Puedes publicar tus bienes inmuebles en LojaHouse ', 'success');
+              'Puedes publicar tus bienes inmuebles en LojaHouse ', 'success');
             break;
           case 'ARRENDATARIO':
             swal('Bienvenido ' + resp.usuario.nombre + ' ' + resp.usuario.apellido,
-          'Puedes empezar a buscar bienes inmuebles ', 'success');
+              'Puedes empezar a buscar bienes inmuebles ', 'success');
             break;
         }
         return true;
@@ -106,75 +124,115 @@ export class UsuarioService {
         return true;
       }),
       catchError((err) => {
-        swal('Uppss...' + err.error.mensaje, ' Existen campos obligatorios vacíos' , 'error');
+        swal('Uppss...' + err.error.mensaje, ' Existen campos obligatorios vacíos', 'error');
         return throwError(err.error.mensaje);
       })
     );
   }
 
-  actualizarUsuario(usuario: Usuario){
+  actualizarUsuario(usuario: Usuario) {
     let url = URL_SERVICIOS + '/usuario/' + usuario._id;
     url += '?token=' + this.token;
 
-    return this.http.put(url, usuario).pipe(map( (resp: any) => {
+    return this.http.put(url, usuario).pipe(map((resp: any) => {
 
-      if (usuario._id === this.usuario._id){
+      if (usuario._id === this.usuario._id) {
         const usuarioDB = resp.usuario;
         this.guardarDatosEnStorage(usuarioDB._id, this.token, usuarioDB);
       }
 
       return true;
     }),
-    catchError((err) => {
-      if (err.error.errors.message === 'Usuario validation failed: correo: El correo debe ser único'){
-        swal('Uppss...', '' + 'El correo que intentas registrar ya existe' , 'error');
-        return throwError('Lo siento, ha ocurrido un error' + err.error.errors.message);
-      }else{
-        swal('Uppss...', '' + err.error.mensaje , 'error');
-        return throwError('Lo siento, ha ocurrido un error' + err.error.errors.message);
-      }
+      catchError((err) => {
+        console.log(err.error.errors.message);
 
+        /*if (err.error.errors.message === 'jwt expired') {
+          this.eliminarStorage();
+          this.router.navigate(['/login']);
+        }*/
+
+        swal('Uppss...', '' + err.error.mensaje, 'error');
+        return throwError('Lo siento, ha ocurrido un error ' + err.error.errors.message);
+      }));
+  }
+
+  actualizarImagen(archivo: File, id: string) {
+
+    this.servicioSubirArchivo.subirArchivo(archivo, 'usuarios', id)
+      .then((resp: any) => {
+        this.usuario.imagen = resp.usuario.imagen;
+        swal('Imagen actualizada', 'Se ha actualizado su foto de perfil', 'success');
+        this.guardarDatosEnStorage(id, this.token, this.usuario);
+      })
+      .catch(resp => {
+       console.log(resp);
+      });
+
+  }
+
+
+
+  cargarUsuarios(desde: number = 0) {
+    const url = URL_SERVICIOS + '/usuario?desde=' + desde;
+
+    return this.http.get(url);
+  }
+
+  buscarUsuarios(termino: string) {
+    const url = URL_SERVICIOS + '/busqueda/coleccion/usuarios/' + termino;
+    return this.http.get(url)
+      .pipe(map((resp: any) => resp.usuarios));
+  }
+
+  /*borrarUsuario(id: string) {
+    let url = URL_SERVICIOS + '/usuario/' + id;
+    url += '?token=' + this.token;
+    return this.http.delete(url)
+      .pipe(
+        map((resp: any) => {
+          swal('Usuario borrado', 'El usuario ha sido eliminado ', 'success');
+          return true;
+        }),
+        catchError((err) => {
+          if (err.error.errors.message === 'jwt expired') {
+            this.eliminarStorage();
+            this.router.navigate(['/login']);
+          }
+          swal('Recuerda:\n la contraseña ' + err.error.mensaje, ' Error al actualizar contraseña', 'error');
+          return throwError(err.error.mensaje);
+        })
+      );
+  }*/
+
+  cambiarPassword(usuario: Usuario) {
+    let url = URL_SERVICIOS + '/password/' + usuario._id;
+    url += '?token=' + this.token;
+
+    return this.http.put(url, usuario).pipe(map((resp: any) => {
+      swal('Contraseña actualizada', 'Se ha actualizado su contraseña', 'success');
+      const usuarioDB = resp.usuario;
+      this.guardarDatosEnStorage(usuarioDB._id, this.token, usuarioDB);
+      return true;
+    }),
+    catchError((err) => {
+      swal('Uppss...' + err.error.mensaje, '', 'error');
+      return throwError(err.error.mensaje);
     }));
   }
 
-  actualizarImagen(archivo: File, id: string){
+  reseteoDePassword(usuario: string) {
+    const url = URL_SERVICIOS + '/resetpassword';
 
-    this.servicioSubirArchivo.subirArchivo(archivo, 'usuarios', id)
-    .then( (resp: any) => {
-      this.usuario.imagen = resp.usuario.imagen;
-      swal('Imagen actualizada', 'Se ha actualizado su foto de perfil', 'success');
-      this.guardarDatosEnStorage(id, this.token, this.usuario);
-    })
-    .catch(resp => {
-      console.log(resp);
-    });
-
-  }
-
-
-
-cargarUsuarios( desde: number = 0){
-  const url = URL_SERVICIOS + '/usuario?desde=' + desde;
-
-  return this.http.get(url);
-}
-
-buscarUsuarios(termino: string){
-    const url = URL_SERVICIOS + '/busqueda/coleccion/usuarios/' + termino;
-    return this.http.get(url)
-    .pipe(map((resp: any) => resp.usuarios));
-}
-
-borrarUsuario(id: string){
-  let url = URL_SERVICIOS + '/usuario/' + id;
-  url += '?token=' + this.token;
-  return this.http.delete( url )
-  .pipe(
-    map((resp: any) => {
-      swal('Usuario borrado', 'El usuario ha sido eliminado ', 'success');
+    return this.http.put(url, usuario).pipe(map((resp: any) => {
+      swal('Contraseña reseteada', 'Se ha enviado la nueva contraseña al correo electrónico: ' + resp.usuario.correo, 'success');
+      this.router.navigate(['/login']);
       return true;
-    })
-  );
-}
+    }),
+      catchError((err) => {
+        swal('Uppss...' + err.error.mensaje, '', 'error');
+        return throwError(err.error.mensaje);
+      })
+    );
+  }
 
 }

@@ -12,7 +12,6 @@ app.use(cors());
 
 
 
-
 //middleware body-parser desde express
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
@@ -21,6 +20,8 @@ app.use(express.json());
 //IMPORTAR RUTAS
 let usuarioRutas = require('./rutas/usuario');
 let loginRutas = require('./rutas/login');
+let cambiarPassword = require('./rutas/cambiarPassword');
+let reseteoPassword = require('./rutas/reseteoPassword');
 let inmuebleRutas = require('./rutas/inmueble');
 let visitaRutas = require('./rutas/visita');
 let busquedaRutas = require('./rutas/busqueda');
@@ -46,6 +47,8 @@ app.use('/usuario', usuarioRutas);
 app.use('/inmueble', inmuebleRutas);
 app.use('/visita', visitaRutas);
 app.use('/login', loginRutas);
+app.use('/password', cambiarPassword);
+app.use('/resetpassword', reseteoPassword);
 app.use('/busqueda', busquedaRutas);
 app.use('/upload', uploadRutas);
 app.use('/img',imagenesRutas);

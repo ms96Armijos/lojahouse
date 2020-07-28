@@ -118,15 +118,12 @@
                                           <div class="u-text">
                                               <h4>{{ usuario.nombre }}</h4>
                                               <p class="text-muted">{{usuario.correo}}</p>
-                                              <a routerLink="/perfil" class="btn btn-rounded btn-danger btn-sm">Ver Perfil</a></div>
+                                              <p>{{usuario.rol}}</p></div>
                                       </div>
                                   </li>
                                   <li role="separator" class="divider"></li>
                                   <li><a routerLink="/perfil"><i class="ti-user"></i> Mi Perfil</a></li>
-                                  <li><a href="#"><i class="ti-wallet"></i> Mi Balance</a></li>
-                                  <li><a href="#"><i class="ti-email"></i> Inbox</a></li>
-                                  <li role="separator" class="divider"></li>
-                                  <li><a href="#"><i class="ti-settings"></i> Account Setting</a></li>
+                                  <li><a routerLink="/cambiarpassword"><i class="ti-key"></i> Cambiar Contraseña</a></li>
                                   <li role="separator" class="divider"></li>
                                   <li><a (click)="_usuarioService.logout()" class="pointer"><i class="fa fa-power-off"></i> Salir</a></li>
                               </ul>

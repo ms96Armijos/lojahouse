@@ -15,6 +15,8 @@ import { FormsModule } from '@angular/forms';
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { InterceptorService } from '../interceptors/interceptor.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 
 @NgModule({
@@ -23,7 +25,7 @@ import { ToastrModule } from 'ngx-toastr';
     DashboardComponent,
     ProgressComponent,
     PerfilComponent,
-    UsuariosComponent
+    UsuariosComponent,
   ],
   exports: [
     DashboardComponent,
@@ -41,6 +43,13 @@ import { ToastrModule } from 'ngx-toastr';
       positionClass: 'toast-bottom-right',
       preventDuplicates: true
     })
+  ],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptorService,
+      multi: true
+    }
   ]
 })
 export class PaginaModule {}

@@ -17,6 +17,9 @@ export class UsuariosComponent implements OnInit {
   totalDeRegistros = 0;
   cargando = true;
 
+  toggle = true;
+  status = 'Enable';
+
   constructor(public _usuarioService: UsuarioService, public toastr: ToastrService) { }
 
   ngOnInit(): void {
@@ -68,7 +71,7 @@ export class UsuariosComponent implements OnInit {
       });
   }
 
-  borrarUsuario(usuario: Usuario) {
+  /*borrarUsuario(usuario: Usuario) {
 
     if (usuario._id === this._usuarioService.usuario._id) {
       swal('Error al borrar el usuario', 'No se puede borrar el usuario: ' + usuario.nombre, 'error');
@@ -94,17 +97,20 @@ export class UsuariosComponent implements OnInit {
         }
       });
 
-  }
+  }*/
 
   guardarUsuario(usuario: Usuario) {
 
-    let estadoObtenido: string;
+    let estadoObtenido: string ;
 
-    if (usuario.estado === 'true') {
+    if (usuario.estado === '1') {
       estadoObtenido = 'DESACTIVADO';
-    } else {
+    }else{
       estadoObtenido = 'ACTIVADO';
     }
+
+
+
 
     swal({
       title: '¿Está seguro de realizar la siguiente acción?',
@@ -117,15 +123,15 @@ export class UsuariosComponent implements OnInit {
       dangerMode: true,
     }).then(borrar => {
       if (borrar) {
-        if (usuario.estado === 'true') {
-          usuario.estado = 'false';
+        if (usuario.estado === '1') {
+          usuario.estado = '0';
         } else {
-          usuario.estado = 'true';
+          usuario.estado = '1';
         }
 
         this._usuarioService.actualizarUsuario(usuario)
           .subscribe();
-          this.toastr.success('Usuario ' + estadoObtenido);
+        this.toastr.success('Usuario ' + estadoObtenido);
       }
     });
   }

@@ -32,12 +32,12 @@ export class RegistroComponent implements OnInit {
       return;
     }
 
-    if (forma.value.rol === "SELECCIONAR" || forma.value.rol === " ") {
+    if (forma.value.rol === "SELECCIONAR" || forma.value.rol === '') {
       swal.default('¡Importante!', 'Debe especificar quién eres', 'warning');
       return;
     }
 
-    const usuario = new Usuario(forma.value.nombre, forma.value.apellido, forma.value.movil, forma.value.correo, forma.value.rol, null, null, null, null, 'ACTIVADO');
+    const usuario = new Usuario(forma.value.nombre, forma.value.apellido, forma.value.movil, forma.value.correo, forma.value.rol, null, null, null, null, '1');
     this._usuarioService.crearUsuario(usuario)
       .subscribe(resp => {
         this.router.navigate(['/login']);

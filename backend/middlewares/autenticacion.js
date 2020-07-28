@@ -12,7 +12,7 @@ exports.verificaToken = function(req, res, next){
       if (err) {
         return res.status(401).json({
           ok: false,
-          mensaje: "¡Token incorrecto!",
+          mensaje: "Tu token ha finalizado, por favor inicia sesión nuevamente",
           errors: err,
         });
       }

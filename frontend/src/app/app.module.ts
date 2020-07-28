@@ -20,7 +20,9 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { RegistroComponent } from './login/registro.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { RecuperarpasswordComponent } from './login/recuperarpassword.component';
+import { RecuperarpasswordComponent } from './login/cambiarpassword.component';
+import { ControlVerPassDirective } from './login/control-ver-pass.directive';
+import { ReseteopasswordComponent } from './login/reseteopassword/reseteopassword.component';
 
 
 
@@ -30,7 +32,9 @@ import { RecuperarpasswordComponent } from './login/recuperarpassword.component'
     AppComponent,
     LoginComponent,
     RegistroComponent,
-    RecuperarpasswordComponent
+    RecuperarpasswordComponent,
+    ControlVerPassDirective,
+    ReseteopasswordComponent,
   ],
   imports: [
     BrowserModule,

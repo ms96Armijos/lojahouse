@@ -9,22 +9,22 @@ let rolesValidos = {
 }
 
 let estadosValidos = {
-    values: ['true', 'false'],
+    values: [1, 0],
     message: '{VALUE} no es un estado permitido'
 }
 
 
 
 let usuarioSchema = new Schema({
-    nombre: {type: String, required: [true, 'Los nombres son necesarios']},
-    apellido: {type: String, required: [true, 'Los apellidos son necesarios']},
-    correo: {type: String, unique:true, required: [true, 'El correo es necesario']},
+    nombre: {type: String, required: false},
+    apellido: {type: String, required: false},
+    correo: {type: String, unique: false},
     password: {type: String, required: false},
     imagen: {type: String, required: false},
     cedula: {type: String, required: false},
-    movil: {type: String, required: [true, 'El número de celular es necesario']},
+    movil: {type: String, required: false},
     convencional: {type: String, required: false},
-    estado: {type: String,required:false, default: 'false', enum: estadosValidos},
+    estado: {type: String, required:false, default: 1, enum: estadosValidos},
     rol: {type: String, required: true, default: 'ADMINISTRADOR', enum: rolesValidos}
 
 });

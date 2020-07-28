@@ -4,14 +4,14 @@
       <div class="login-box card">
           <div class="card-body">
               <form  #f="ngForm" class="floating-labels m-t-40" (ngSubmit)="ingresar(f)">
-                  <a href="javascript:void(0)" class="text-center db"><img src="assets/images/logo-icon.png" alt="Home" /><br/><img src="assets/images/logo-text.png" alt="Home" /></a>
+                  <a routerLink="/dashboard" class="text-center db"><img src="assets/images/logo-icon.png" alt="Home" /><br/><img src="assets/images/logo-text.png" alt="Home" /></a>
 
                   <span *ngIf="f.submitted && f.controls['correo'].errors"
                   class="text-danger animated fadeIn">El correo es obligatorio</span>
 
                   <div class="form-group m-t-40">
                     <input ngModel name="correo" class="form-control input-sm" type="email" required email><span class="bar"></span>
-                    <label for="correo">Nombre de usuario</label>
+                    <label for="correo">Nombre de usuario (Correo Electrónico)</label>
                 </div>
 
                   <span *ngIf="f.submitted && f.controls['password'].errors"
@@ -20,7 +20,7 @@
 
                   <div class="form-group m-t-40">
                     <input ngModel name="password" class="form-control" type="password" required><span class="bar"></span>
-                    <label for="password">Contraseña</label>
+                    <label for="password" >Contraseña</label>
                 </div>
 
                   <div class="form-group row">
@@ -29,7 +29,7 @@
                               <input id="checkbox-signup" type="checkbox" class="filled-in chk-col-light-blue">
                               <label for="checkbox-signup"> Recordar contraseña </label>
                           </div>-->
-                          <a href="javascript:void(0)" id="to-recover" class="text-dark pull-right"><i class="fa fa-lock m-r-5"></i> ¿Olvidaste tu contraseña?</a>
+                          <a routerLink="/reseteopassword" id="to-recover" class="text-dark pull-right"><i class="fa fa-lock m-r-5"></i> ¿Olvidaste tu contraseña?</a>
                         </div>
                   </div>
                   <div class="form-group text-center m-t-20">
