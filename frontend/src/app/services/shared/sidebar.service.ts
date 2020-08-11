@@ -6,11 +6,11 @@ import { Injectable } from '@angular/core';
 export class SidebarService {
   menu: any = [
     {
-      titulo: 'Principal',
+      titulo: 'Arrendador',
       icono: 'mdi mdi-gauge',
       submenu: [
         { titulo: ' Dashboard', url: '/dashboard' },
-        { titulo: ' Gestión de Inmuebles ', url: '/progress' },
+        { titulo: ' Gestión de Inmuebles ', url: '/inmuebles' },
         { titulo: ' Gestión de visitas ', url: '/gestion-visitas' },
         { titulo: ' Gestión de Contratos de Alquiler ', url: '/gestion-contratos' },
         { titulo: ' Alquilar inmueble ', url: '/alquilar-inmueble' }

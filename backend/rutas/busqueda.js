@@ -2,6 +2,7 @@ let express = require("express");
 let Inmueble = require("../modelos/inmueble");
 let Visita = require("../modelos/visita");
 let Usuario = require("../modelos/usuario");
+let Servicio = require('../modelos/servicio');
 
 let app = express();
 //BUSQUEDAS ESPECIFICAS
@@ -23,10 +24,14 @@ app.get("/coleccion/:tabla/:busqueda", (req, res) => {
       promesa = buscarInmuebles(busqueda, expresionRegular);
       break;
 
+    case "servicios":
+      promesa = buscarServicios(busqueda, expresionRegular);
+      break;
+
     default:
       return res.status(400).json({
         ok: false,
-        mensaje: "Los tipos de búsqueda son: usuarios, visitas, inmuebles",
+        mensaje: "Los tipos de búsqueda son: usuarios, visitas, inmuebles, servicios",
         error: { message: "Tipo de colección no válida" },
       });
   }
@@ -48,6 +53,7 @@ app.get("/todo/:busqueda", (req, res, next) => {
     buscarInmuebles(busqueda, expresionRegular),
     buscarVisitas(busqueda, expresionRegular),
     buscarUsuarios(busqueda, expresionRegular),
+    buscarServicios(busqueda, expresionRegular),
   ])
     .then((respuestas) => {
       res.status(200).json({
@@ -55,6 +61,7 @@ app.get("/todo/:busqueda", (req, res, next) => {
         inmuebles: respuestas[0],
         visitas: respuestas[1],
         usuarios: respuestas[2],
+        servicios: respuesta[3],
       });
     })
     .catch();
@@ -104,4 +111,18 @@ function buscarUsuarios(busqueda, expresionRegular) {
       });
   });
 }
+
+function buscarServicios(busqueda, expresionRegular) {
+  return new Promise((resolve, reject) => {
+    Servicio.find({ nombre: expresionRegular })
+      .exec((err, servicios) => {
+        if (err) {
+          reject("Error al cargar Servicios", err);
+        } else {
+          resolve(servicios);
+        }
+      });
+  });
+}
+
 module.exports = app;

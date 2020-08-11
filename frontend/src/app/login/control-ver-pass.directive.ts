@@ -14,17 +14,17 @@ export class ControlVerPassDirective {
     this._shown = !this._shown;
     if (this._shown) {
       this.el.nativeElement.setAttribute('type', 'text');
-      span.innerHTML = 'Ocultar';
+      span.innerHTML = '<i class="fa fa-eye-slash"></i>';
     } else {
       this.el.nativeElement.setAttribute('type', 'password');
-      span.innerHTML = 'Ver';
+      span.innerHTML = '<i class="fa fa-eye"></i>';
     }
   }
 
   setup() {
     const parent = this.el.nativeElement.parentNode;
     const span = document.createElement('span');
-    span.innerHTML = `Ver`;
+    span.innerHTML = `<i class="fa fa-eye"></i>`;
     span.addEventListener('click', (event) => {
       this.toggle(span);
     });

@@ -1,0 +1,70 @@
+<div class="container m-b-5">
+  <div class="row animate fadeIn">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <input #input (keyup)="buscarInmuebles(input.value)" type="text" class="form-control"
+            placeholder="Buscar inmuebles...">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="text-right">
+
+            <a routerLink="/crearinmueble" class="boton_personalizado"><b> Crear Inmueble</b></a>
+          </div>
+          <h3 class="card-title">Inmuebles registrados(<small>{{_inmuebleService.totalInmuebles}}</small>)</h3>
+
+          <div class="table-responsive m-t-40">
+            <div class="container p-4">
+              <div class="row">
+                <div class="card-columns text-center">
+                  <div class="card animated fadeIn" *ngFor="let inmueble of inmuebles">
+                    <h3 class="card-title">{{inmueble.nombre}}</h3>
+                    <img *ngIf="!imagenTemporal" [src]="inmueble.xxx | imagen" class="w150" alt="">
+                    <div class="card-body">
+                      <h6 class="card-text text-left">{{inmueble.direccion}}</h6>
+                      <p class="card-text text-left">{{inmueble.descripcion}}</p>
+                      <p class="card-text text-left">{{inmueble.servicio}}</p>
+                      <p class="card-text text-right">$ {{inmueble.precioalquiler}}</p>
+
+
+                      <!--<button (click)="actualizarInmueble(inmueble)" class="btn btn-primary"><i
+                        class="fa fa-save"></i></button>-->
+                        <button (click)="borrarInmueble(inmueble)" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button (click)="cambiarPaginacion(-5)" class="btn btn-secondary m-r-5">Anteriores</button>
+  <button (click)="cambiarPaginacion(5)" class="btn btn-secondary">Siguientes</button>
+
+  <!--<ng-template #inmuebleModal>
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <input [(ngModel)]="inmueble.tipoInmueble" name="tipo" type="text" class="form-control" placeholder="Contraseña">
+    </div>
+    <div class="modal-body">
+      <div>ID</div>
+      <div>Name</div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="inmuebleModal">Cancelar</button>
+      <button type="button" class="btn btn-primary">Actualizar</button>
+    </div>
+  </ng-template>-->
+
+</div>

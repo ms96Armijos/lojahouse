@@ -23,6 +23,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RecuperarpasswordComponent } from './login/cambiarpassword.component';
 import { ControlVerPassDirective } from './login/control-ver-pass.directive';
 import { ReseteopasswordComponent } from './login/reseteopassword/reseteopassword.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 
 
@@ -42,8 +44,9 @@ import { ReseteopasswordComponent } from './login/reseteopassword/reseteopasswor
     PaginaModule,
     ReactiveFormsModule,
     FormsModule,
-    ServiceModule
-  ],
+    ServiceModule,
+    NgbModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

@@ -17,8 +17,6 @@ export class UsuariosComponent implements OnInit {
   totalDeRegistros = 0;
   cargando = true;
 
-  toggle = true;
-  status = 'Enable';
 
   constructor(public _usuarioService: UsuarioService, public toastr: ToastrService) { }
 
@@ -108,9 +106,6 @@ export class UsuariosComponent implements OnInit {
     }else{
       estadoObtenido = 'ACTIVADO';
     }
-
-
-
 
     swal({
       title: '¿Está seguro de realizar la siguiente acción?',

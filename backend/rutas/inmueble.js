@@ -13,37 +13,68 @@ app.get("/", (req, res, next) => {
   desde = Number(desde);
 
   Inmueble.find({}).populate('usuario', 'nombre correo')
-  .skip(desde)
-  .limit(5)
-  .exec((err, inmuebles) => {
-    if (err) {
-      return res.status(500).json({
-        ok: false,
-        mensaje: "Error cargando inmueble",
-        errors: err,
-      });
-    }
-
-    Inmueble.count({}, (err, conteo) => {
-
+    .skip(desde)
+    .limit(6)
+    .exec((err, inmuebles) => {
       if (err) {
         return res.status(500).json({
           ok: false,
-          mensaje: "Error contando usuarios",
+          mensaje: "Error cargando inmueble",
           errors: err,
+        });
+      }
+
+      Inmueble.countDocuments({}, (err, conteo) => {
+
+        if (err) {
+          return res.status(500).json({
+            ok: false,
+            mensaje: "Error contando usuarios",
+            errors: err,
+          });
+        }
+
+        res.status(200).json({
+          ok: true,
+          inmuebles: inmuebles,
+          total: conteo
+        });
+      });
+
+
+    });
+});
+
+
+//OBTENER UN INMUEBLE ESPECIFICO
+app.get('/:id', (req, res) => {
+  let id = req.params.id;
+  Inmueble.findById(id)
+    .populate('usuario', 'nombre imagen correo')
+    .exec((err, inmueble) => {
+      if (err) {
+        return res.status(500).json({
+          ok: false,
+          mensaje: 'Error al buscar inmueble',
+          errors: err
+        });
+      }
+      if (!inmueble) {
+        return res.status(400).json({
+          ok: false,
+          mensaje: 'El inmueble con el id: ' + id + ' no existe',
+          errors: { message: 'No existe el inmueble con ese ID' }
         });
       }
 
       res.status(200).json({
         ok: true,
-        inmuebles: inmuebles,
-        total: conteo
-      });
-    });
-    
-   
-  });
+        inmueble: inmueble
+      })
+    })
 });
+
+
 
 //ACTUALIZAR UN NUEVO HOSPITAL
 app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
@@ -71,11 +102,12 @@ app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
     inmueble.descripcion = body.descripcion;
     inmueble.direccion = body.direccion;
     inmueble.codigo = body.codigo;
-    inmueble.tipoInmueble = body.tipoInmueble;
+    inmueble.tipo = body.tipo;
     inmueble.servicio = body.servicio;
-    inmueble.precioNormal = body.precioNormal;
-    inmueble.precioOferta = body.precioOferta;
-    inmueble.precioAlquiler = body.precioAlquiler;
+    inmueble.precionormal = body.precioNormal;
+    inmueble.preciooferta = body.precioOferta;
+    inmueble.precioalquiler = body.precioAlquiler;
+    inmueble.garantia = body.garantia;
     inmueble.estado = body.estado;
     inmueble.usuario = req.usuario._id;
 
@@ -88,7 +120,7 @@ app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
           errors: err,
         });
       }
-      
+
       res.status(200).json({
         ok: true,
         inmueble: inmuebleGuardado,
@@ -106,11 +138,12 @@ app.post("/", mdwareAutenticacion.verificaToken, (req, res) => {
     descripcion: body.descripcion,
     direccion: body.direccion,
     codigo: body.codigo,
-    tipoInmueble: body.tipoInmueble,
+    tipo: body.tipo,
     servicio: body.servicio,
-    precioNormal: body.precioNormal,
-    precioOferta: body.precioOferta,
-    precioAlquiler: body.precioAlquiler,
+    precionormal: body.precionormal,
+    preciooferta: body.preciooferta,
+    precioalquiler: body.precioalquiler,
+    garantia: body.garantia,
     estado: body.estado,
     usuario: req.usuario._id
 

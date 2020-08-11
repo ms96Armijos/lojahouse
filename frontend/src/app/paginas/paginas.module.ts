@@ -11,12 +11,16 @@ import { ShareModule } from './../shared/shared.module';
 import { ProgressComponent } from './progress/progress.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PerfilComponent } from './perfil/perfil.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { InterceptorService } from '../interceptors/interceptor.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { InmueblesComponent } from './inmuebles/inmuebles.component';
+import { CrearinmuebleComponent } from './inmuebles/crearinmueble/crearinmueble.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { ServiciosbasicosComponent } from './serviciosbasicos/serviciosbasicos.component';
 
 
 @NgModule({
@@ -26,6 +30,9 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     ProgressComponent,
     PerfilComponent,
     UsuariosComponent,
+    InmueblesComponent,
+    CrearinmuebleComponent,
+    ServiciosbasicosComponent,
   ],
   exports: [
     DashboardComponent,
@@ -37,6 +44,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     PipesModule,
     FormsModule,
     CommonModule,
+    DragDropModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot({
       timeOut: 2000,

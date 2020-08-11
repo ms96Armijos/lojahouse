@@ -23,6 +23,8 @@ let loginRutas = require('./rutas/login');
 let cambiarPassword = require('./rutas/cambiarPassword');
 let reseteoPassword = require('./rutas/reseteoPassword');
 let inmuebleRutas = require('./rutas/inmueble');
+let servicioRutas = require('./rutas/servicio');
+
 let visitaRutas = require('./rutas/visita');
 let busquedaRutas = require('./rutas/busqueda');
 let uploadRutas = require('./rutas/upload');
@@ -45,6 +47,8 @@ mongoose.connection.openUri("mongodb://localhost:27017/lojahouseDB",
 //RUTAS
 app.use('/usuario', usuarioRutas);
 app.use('/inmueble', inmuebleRutas);
+app.use('/servicio', servicioRutas);
+
 app.use('/visita', visitaRutas);
 app.use('/login', loginRutas);
 app.use('/password', cambiarPassword);
