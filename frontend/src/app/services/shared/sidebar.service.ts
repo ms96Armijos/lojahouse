@@ -11,7 +11,7 @@ export class SidebarService {
       submenu: [
         { titulo: ' Dashboard', url: '/dashboard' },
         { titulo: ' Gestión de Inmuebles ', url: '/inmuebles' },
-        { titulo: ' Gestión de visitas ', url: '/gestion-visitas' },
+        { titulo: ' Gestión de visitas ', url: '/visitas' },
         { titulo: ' Gestión de Contratos de Alquiler ', url: '/gestion-contratos' },
         { titulo: ' Alquilar inmueble ', url: '/alquilar-inmueble' }
       ],

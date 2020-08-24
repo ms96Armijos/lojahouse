@@ -1,0 +1,48 @@
+<div class="container m-b-5">
+  <div class="row animate fadeIn">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <input #input (keyup)="buscarVisitas(input.value)" type="text" class="form-control"
+            placeholder="Buscar visitas...">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+
+          <table class="table table-hover" style="width:100%">
+            <thead>
+              <tr>
+                <th>Interesado</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let visita of visitas">
+                <td>{{visita.usuario.nombre}}</td>
+                <td>{{visita.fecha}}</td>
+                <td>{{visita.estado}}</td>
+                <td>
+                  <button  class="btn btn-primary">VER</button>
+                  <button  class="btn btn-primary m-l-5">ACEPTAR</button>
+                  <button  class="btn btn-primary m-l-5">RECHAZAR</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <button (click)="cambiarPaginacion(-6)" class="btn btn-secondary m-r-5">Anteriores</button>
+          <button (click)="cambiarPaginacion(6)" class="btn btn-secondary">Siguientes</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

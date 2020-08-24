@@ -16,7 +16,7 @@
         <div class="card-body">
           <div class="text-right">
 
-            <a routerLink="/crearinmueble" class="boton_personalizado"><b> Crear Inmueble</b></a>
+            <a routerLink="/crearinmueble" class="boton_personalizado" [routerLink]="['/crearinmueble','nuevo']"><b> Crear Inmueble</b></a>
           </div>
           <h3 class="card-title">Inmuebles registrados(<small>{{_inmuebleService.totalInmuebles}}</small>)</h3>
 
@@ -34,10 +34,15 @@
                       <p class="card-text text-right">$ {{inmueble.precioalquiler}}</p>
 
 
-                      <!--<button (click)="actualizarInmueble(inmueble)" class="btn btn-primary"><i
-                        class="fa fa-save"></i></button>-->
-                        <button (click)="borrarInmueble(inmueble)" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                      <button (click)="publicarInmueble( inmueble )"  [ngStyle]="{'background-color':inmueble.publicado == '1'? 'green':'red'}"  class="btn btn-outline-light btn-rounded">
+                        {{inmueble.publicado == '1' ? 'Publicado' : 'Publicar'}}</button>
+
+
                     </div>
+                    <button [routerLink]="['/crearinmueble', inmueble._id]" class="btn btn-primary"><i
+                      class="fa fa-save"></i></button>
+                    <button (click)="borrarInmueble(inmueble)" class="btn btn-danger"><i
+                        class="fa fa-trash"></i></button>
                   </div>
                 </div>
               </div>
@@ -68,3 +73,4 @@
   </ng-template>-->
 
 </div>
+

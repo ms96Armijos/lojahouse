@@ -83,12 +83,10 @@ function buscarInmuebles(busqueda, expresionRegular) {
 
 function buscarVisitas(busqueda, expresionRegular) {
   return new Promise((resolve, reject) => {
-    Visita.find({ descripcion: expresionRegular })
+    Visita.find({})
+    .or([{ fecha: expresionRegular }, { descripcion: expresionRegular }, { estado: expresionRegular }])
       .populate("usuario", " nombre apellido correo")
-      .populate(
-        "inmueble",
-        "nombre descripcion tipoInmueble direccion precioAlquiler"
-      )
+      .populate("inmueble","nombre descripcion tipo direccion precioalquiler")
       .exec((err, visitas) => {
         if (err) {
           reject("Error al cargar Visitas", err);

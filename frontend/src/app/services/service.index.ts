@@ -1,3 +1,4 @@
+export { VisitasService } from './visitas/visitas.service';
 export { ServiciosbasicosService } from './serviciosbasicos/serviciosbasicos.service';
 export { InmueblesService } from './inmueble/inmuebles.service';
 export { SubirArchivoService } from './subirArchivo/subir-archivo.service';

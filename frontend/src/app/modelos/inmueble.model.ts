@@ -10,9 +10,8 @@ export class Inmueble {
     public garantia?: number,
     public servicio?: Array<string>,
     public imagen?: Array<string>,
-    public precionormal?: number,
-    public preciooferta?: number,
     public estado?: string,
+    public publicado?: string,
     public usuario?: string,
     public _id?: string
   ) { }

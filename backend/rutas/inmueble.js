@@ -12,7 +12,8 @@ app.get("/", (req, res, next) => {
   let desde = req.query.desde || 0;
   desde = Number(desde);
 
-  Inmueble.find({}).populate('usuario', 'nombre correo')
+  Inmueble.find({})
+  .populate('usuario', 'nombre correo')
     .skip(desde)
     .limit(6)
     .exec((err, inmuebles) => {
@@ -76,7 +77,7 @@ app.get('/:id', (req, res) => {
 
 
 
-//ACTUALIZAR UN NUEVO HOSPITAL
+//ACTUALIZAR UN NUEVO INMUEBLE
 app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
   let id = req.params.id;
   let body = req.body;
@@ -104,11 +105,10 @@ app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
     inmueble.codigo = body.codigo;
     inmueble.tipo = body.tipo;
     inmueble.servicio = body.servicio;
-    inmueble.precionormal = body.precioNormal;
-    inmueble.preciooferta = body.precioOferta;
-    inmueble.precioalquiler = body.precioAlquiler;
+    inmueble.precioalquiler = body.precioalquiler;
     inmueble.garantia = body.garantia;
     inmueble.estado = body.estado;
+    inmueble.publicado = body.publicado;
     inmueble.usuario = req.usuario._id;
 
 
@@ -140,11 +140,10 @@ app.post("/", mdwareAutenticacion.verificaToken, (req, res) => {
     codigo: body.codigo,
     tipo: body.tipo,
     servicio: body.servicio,
-    precionormal: body.precionormal,
-    preciooferta: body.preciooferta,
     precioalquiler: body.precioalquiler,
     garantia: body.garantia,
     estado: body.estado,
+    publicado:body.publicado,
     usuario: req.usuario._id
 
   });

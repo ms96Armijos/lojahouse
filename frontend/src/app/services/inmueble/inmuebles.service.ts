@@ -57,25 +57,46 @@ export class InmueblesService {
     );
   }
 
-  crearInmueble( inmueble: Inmueble){
+  crearInmueble(inmueble: Inmueble) {
     let url = URL_SERVICIOS + '/inmueble';
-    url += '?token=' + this._usuarioService.token;
 
-    return this.http.post(url, inmueble)
-    .pipe(
-      map((resp: any) => {
-        swal(
-          'Inmueble registrado!!',
-          'Se ha registrado su bien inmueble',
-          'success'
+    if (inmueble._id) {
+      url += '/' + inmueble._id;
+      url += '?token=' + this._usuarioService.token;
+      return this.http.put(url, inmueble)
+        .pipe(map((resp: any) => {
+          swal(
+            'Inmueble actualizado!!',
+            'Se ha actualizado su inmueble',
+            'success'
+          );
+          return true;
+        }),
+          catchError((err) => {
+            swal('Uppss...' + err.error.mensaje, ' Existen campos obligatorios vacíos', 'error');
+            return throwError(err.error.mensaje);
+          }));
+
+    } else {
+      url += '?token=' + this._usuarioService.token;
+
+      return this.http.post(url, inmueble)
+        .pipe(
+          map((resp: any) => {
+            swal(
+              'Inmueble registrado!!',
+              'Se ha registrado su bien inmueble',
+              'success'
+            );
+            return true;
+          }),
+          catchError((err) => {
+            swal('Uppss...' + err.error.errors, ' Existen campos obligatorios vacíos', 'error');
+            return throwError(err.error.mensaje);
+          })
         );
-        return true;
-      }),
-      catchError((err) => {
-        swal('Uppss...' + err.error.errors, ' Existen campos obligatorios vacíos', 'error');
-        return throwError(err.error.mensaje);
-      })
-    );
+    }
+
   }
 
   buscarInmuebles(termino: string) {
@@ -84,12 +105,14 @@ export class InmueblesService {
       .pipe(map((resp: any) => resp.inmuebles));
   }
 
-  actualizarInmueble( inmueble: Inmueble){
-    let url = URL_SERVICIOS + '/inmueble' + inmueble._id;
+  publicarInmueble(inmueble: Inmueble) {
+    let url = URL_SERVICIOS + '/desactivarinmueble/' + inmueble._id;
     url += '?token=' + this._usuarioService.token;
 
-    return this.http.put( url, inmueble )
-    .pipe(map( (resp: any ) => resp.inmueble));
+    return this.http.put(url, inmueble)
+      .pipe(map((resp: any) => resp.inmueble));
   }
+
+
 
 }

@@ -21,6 +21,8 @@ import { InmueblesComponent } from './inmuebles/inmuebles.component';
 import { CrearinmuebleComponent } from './inmuebles/crearinmueble/crearinmueble.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ServiciosbasicosComponent } from './serviciosbasicos/serviciosbasicos.component';
+import { CrearservicioComponent } from './serviciosbasicos/crearservicio/crearservicio.component';
+import { VisitasComponent } from './visitas/visitas.component';
 
 
 @NgModule({
@@ -33,6 +35,8 @@ import { ServiciosbasicosComponent } from './serviciosbasicos/serviciosbasicos.c
     InmueblesComponent,
     CrearinmuebleComponent,
     ServiciosbasicosComponent,
+    CrearservicioComponent,
+    VisitasComponent,
   ],
   exports: [
     DashboardComponent,
@@ -43,6 +47,7 @@ import { ServiciosbasicosComponent } from './serviciosbasicos/serviciosbasicos.c
     PAGINAS_ROUTES,
     PipesModule,
     FormsModule,
+    ReactiveFormsModule,
     CommonModule,
     DragDropModule,
     BrowserAnimationsModule,

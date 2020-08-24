@@ -2,7 +2,7 @@ import { Servicio } from './../../../modelos/servicio.model';
 import { ServiciosbasicosService } from './../../../services/serviciosbasicos/serviciosbasicos.service';
 import { UsuarioService } from './../../../services/usuario/usuario.service';
 import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Inmueble } from './../../../modelos/inmueble.model';
 import { InmueblesService } from './../../../services/inmueble/inmuebles.service';
 import { Component, OnInit } from '@angular/core';
@@ -18,6 +18,9 @@ import { ToastrService } from 'ngx-toastr';
   ]
 })
 export class CrearinmuebleComponent implements OnInit {
+
+
+  inmuebles: Inmueble = new Inmueble('', '', '', '', '', null);
 
   desde = 0;
   servicios = [];
@@ -41,7 +44,16 @@ export class CrearinmuebleComponent implements OnInit {
     public _usuarioService: UsuarioService,
     public _basicosService: ServiciosbasicosService,
     public router: Router,
-    public toastr: ToastrService) {
+    public toastr: ToastrService,
+    public activatedRoute: ActivatedRoute) {
+
+      activatedRoute.params.subscribe(parametros => {
+        let id = parametros['id'];
+
+        if(id !== 'nuevo'){
+          this.obtenerInmueble(id);
+        }
+      });
 
   }
 
@@ -49,12 +61,24 @@ export class CrearinmuebleComponent implements OnInit {
 
   ngOnInit(): void {
     this._basicosService.cargarServicios()
-    .subscribe(servicios =>
-      {
-          this.servicios = servicios;
+      .subscribe(servicios => {
+        this.servicios = servicios;
       });
 
   }
+
+
+  obtenerInmueble(id: string){
+    this._inmuebleService.obtenerInmueble( id )
+    .subscribe( inmueble => {
+
+
+      this.inmuebles = inmueble;
+      console.log(this.inmuebles);
+    });
+  }
+
+
   crearInmueble(forma: NgForm) {
 
 
@@ -62,19 +86,34 @@ export class CrearinmuebleComponent implements OnInit {
       return;
     }
 
+
+
+
     for (let serv of this.servicioselegidos) {
       //console.log(serv.nombre); // 1, "string", false
       this.nuevservicios.push(serv.nombre);
     }
+    this.inmuebles.nombre = forma.value.nombre;
+    this.inmuebles.descripcion = forma.value.descripcion;
+    this.inmuebles.direccion = forma.value.direccion;
+    this.inmuebles.codigo = forma.value.codigo;
+    this.inmuebles.tipo = forma.value.tipo;
+    this.inmuebles.precioalquiler = forma.value.precioalquiler;
+    this.inmuebles.garantia = forma.value.garantia;
+    this.inmuebles.servicio = this.nuevservicios;
+    this.inmuebles.estado = 'OCUPADO';
+    this.inmuebles.publicado = '0';
+    this.inmuebles.usuario = this._usuarioService.usuario._id;
 
-    console.log(this.nuevservicios);
 
-   const inmueble = new Inmueble(forma.value.nombre, forma.value.descripcion,
+
+
+    /*const inmueble = new Inmueble(forma.value.nombre, forma.value.descripcion,
       forma.value.direccion, forma.value.codigo, forma.value.tipo,
       forma.value.precioalquiler, forma.value.garantia, this.nuevservicios, null,
-      forma.value.precionormal, forma.value.preciooferta, 'OCUPADO', this._usuarioService.usuario._id);
+      'OCUPADO', this._usuarioService.usuario._id);*/
 
-    this._inmuebleService.crearInmueble(inmueble)
+    this._inmuebleService.crearInmueble(this.inmuebles)
       .subscribe(resp => {
         this.router.navigate(['/inmuebles']);
       });
@@ -95,9 +134,9 @@ export class CrearinmuebleComponent implements OnInit {
     this.cargarServicios();
   }
 
-  cargarServicios(){
+  cargarServicios() {
     this._basicosService.cargarServicios(this.desde)
-    .subscribe( servicios => this.servicios = servicios);
+      .subscribe(servicios => this.servicios = servicios);
   }
 }
 

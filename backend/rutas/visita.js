@@ -4,8 +4,9 @@ let mdwareAutenticacion = require('../middlewares/autenticacion');
 let app = express();
 
 let Visita = require("../modelos/visita");
+const { populate } = require("../modelos/inmueble");
 
-//OBTENER TODOS LOS USUARIOS
+//OBTENER TODOS LAS VISITA
 app.get("/", (req, res, next) => {
 
   let desde = req.query.desde || 0;
@@ -45,7 +46,36 @@ app.get("/", (req, res, next) => {
   });
 });
 
-//ACTUALIZAR UN NUEVO HOSPITAL
+//OBTENER UN INMUEBLE ESPECIFICO
+app.get('/:id', (req, res) => {
+  let id = req.params.id;
+  Visita.findById(id)
+    .populate('usuario', 'nombre correo').populate('inmueble')
+    .exec((err, visita) => {
+      if (err) {
+        return res.status(500).json({
+          ok: false,
+          mensaje: 'Error al buscar visita',
+          errors: err
+        });
+      }
+      if (!visita) {
+        return res.status(400).json({
+          ok: false,
+          mensaje: 'El inmueble con el id: ' + id + ' no existe',
+          errors: { message: 'No existe el visita con ese ID' }
+        });
+      }
+
+      res.status(200).json({
+        ok: true,
+        visita: visita
+      })
+    })
+});
+
+
+//ACTUALIZAR UN NUEVA VISITA
 app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
   let id = req.params.id;
   let body = req.body;
@@ -91,7 +121,7 @@ app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
   });
 });
 
-//CREAR UN NUEVO HOSPITAL
+//CREAR UN NUEVO VISITA
 app.post("/", mdwareAutenticacion.verificaToken, (req, res) => {
   let body = req.body;
 
@@ -121,7 +151,7 @@ app.post("/", mdwareAutenticacion.verificaToken, (req, res) => {
   });
 });
 
-//ELIMINAR UN USUARIO
+//ELIMINAR UN VISITA
 app.delete("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
   let id = req.params.id;
 

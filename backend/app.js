@@ -23,7 +23,9 @@ let loginRutas = require('./rutas/login');
 let cambiarPassword = require('./rutas/cambiarPassword');
 let reseteoPassword = require('./rutas/reseteoPassword');
 let inmuebleRutas = require('./rutas/inmueble');
+let desactivarInmueble = require('./rutas/desactivarinmueble');
 let servicioRutas = require('./rutas/servicio');
+
 
 let visitaRutas = require('./rutas/visita');
 let busquedaRutas = require('./rutas/busqueda');
@@ -53,6 +55,7 @@ app.use('/visita', visitaRutas);
 app.use('/login', loginRutas);
 app.use('/password', cambiarPassword);
 app.use('/resetpassword', reseteoPassword);
+app.use('/desactivarinmueble',desactivarInmueble);
 app.use('/busqueda', busquedaRutas);
 app.use('/upload', uploadRutas);
 app.use('/img',imagenesRutas);

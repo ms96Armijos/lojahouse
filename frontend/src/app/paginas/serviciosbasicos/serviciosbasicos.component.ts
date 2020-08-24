@@ -1,3 +1,4 @@
+import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { element } from 'protractor';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
@@ -5,6 +6,8 @@ import { ServiciosbasicosService } from './../../services/serviciosbasicos/servi
 import { Servicio } from './../../modelos/servicio.model';
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import swal from 'sweetalert';
+
 
 @Component({
   selector: 'app-serviciosbasicos',
@@ -17,11 +20,13 @@ export class ServiciosbasicosComponent implements OnInit {
   servicios: Servicio[] = [];
   desde = 0;
 
-  constructor(public _basicosService: ServiciosbasicosService, public toastr: ToastrService, public router: Router) { }
+  constructor(public _basicosService: ServiciosbasicosService,
+      public toastr: ToastrService, public router: Router) {}
 
   ngOnInit(): void {
     this.cargarServicios();
   }
+
 
   cargarServicios(){
     this._basicosService.cargarServicios(this.desde)
@@ -29,9 +34,7 @@ export class ServiciosbasicosComponent implements OnInit {
   }
 
 
-
-
-  crearServicio(forma: NgForm) {
+  /*crearServicio(forma: NgForm) {
 
     if (forma.invalid) {
       return;
@@ -43,8 +46,7 @@ export class ServiciosbasicosComponent implements OnInit {
       .subscribe(resp => {
         this.router.navigate(['/servicios']);
       });
-  }
-
+  }*/
 
 
   cambiarPaginacion(valor: number) {
@@ -75,8 +77,26 @@ export class ServiciosbasicosComponent implements OnInit {
   }
 
   borrarServicio( servicio: Servicio ){
-    this._basicosService.borrarServicio( servicio._id )
-    .subscribe( () => this.cargarServicios());
+
+    swal({
+      title: '¿Está seguro de borrar el servicio?',
+      text: 'Está a punto de borrar el servicio: ' + servicio.nombre,
+      icon: 'warning',
+      buttons: [
+        'Cancelar',
+        'Eliminar'
+      ],
+      dangerMode: true,
+    })
+      .then(borrar => {
+        if (borrar) {
+          this._basicosService.borrarServicio(servicio._id)
+            .subscribe(borrado => {
+              this.cargarServicios();
+            });
+        }
+      });
+
   }
 
 }

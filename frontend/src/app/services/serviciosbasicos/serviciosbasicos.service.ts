@@ -12,6 +12,7 @@ import swal from 'sweetalert';
 })
 export class ServiciosbasicosService {
 
+  servicio: Servicio;
   totalServicios = 0;
 
   constructor( public http: HttpClient, public _usuarioService: UsuarioService) { }
@@ -21,6 +22,7 @@ export class ServiciosbasicosService {
     return this.http.get(url).pipe(
       map((resp: any) => {
         this.totalServicios = resp.total;
+        this.servicio = resp.servicios;
         return resp.servicios;
       })
     );
@@ -28,24 +30,54 @@ export class ServiciosbasicosService {
 
   crearServicio( servicio: Servicio){
     let url = URL_SERVICIOS + '/servicio';
-    url += '?token=' + this._usuarioService.token;
 
-    return this.http.post(url, servicio)
-    .pipe(
-      map((resp: any) => {
+    //SI EXISTE EL ID, ACTUALIZA EL SERVICIO
+    if ( servicio._id){
+      url += '/' + servicio._id;
+      url += '?token=' + this._usuarioService.token;
+      return this.http.put( url, servicio )
+      .pipe(map( (resp: any ) => {
         swal(
-          'Servicio registrado!!',
-          'Se ha registrado su servicio',
+          'Servicio actualizado!!',
+          'Se ha actualizado su servicio',
           'success'
         );
         return true;
       }),
       catchError((err) => {
-        swal('Uppss...' + err.error.errors, ' Existen campos obligatorios vacíos', 'error');
+        swal('Uppss...' + '', ' Debes ingresar el nombre del servicio', 'error');
         return throwError(err.error.mensaje);
-      })
-    );
+      }));
+
+    }else{
+//SI NO EXISTE EL ID, CREA UN NUEVO SERVICIO
+      url += '?token=' + this._usuarioService.token;
+      return this.http.post(url, servicio)
+      .pipe(
+        map((resp: any) => {
+          swal(
+            'Servicio registrado!!',
+            'Se ha registrado su servicio',
+            'success'
+          );
+          return true;
+        }),
+        catchError((err) => {
+          swal('Uppss...' + '', ' El servicio: ' + servicio.nombre + ' ya existe, ingresa uno diferente', 'error');
+          return throwError(err.error.mensaje);
+        })
+      );
+    }
   }
+
+
+  /**actualizarServicio( servicio: Servicio){
+    let url = URL_SERVICIOS + '/servicio' + servicio._id;
+    url += '?token=' + this._usuarioService.token;
+
+    return this.http.put( url, servicio )
+    .pipe(map( (resp: any ) => resp.servicio));
+  }*/
 
 
   obtenerServicio(id: string) {
