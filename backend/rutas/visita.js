@@ -4,16 +4,64 @@ let mdwareAutenticacion = require('../middlewares/autenticacion');
 let app = express();
 
 let Visita = require("../modelos/visita");
-const { populate } = require("../modelos/inmueble");
+let Inmueble = require("../modelos/inmueble");
 
 //OBTENER TODOS LAS VISITA
-app.get("/", (req, res, next) => {
+app.get("/allvisitas/:desde", mdwareAutenticacion.verificaToken, async (req, res, next) => {
 
-  let desde = req.query.desde || 0;
+  /*let desde = req.query.desde || 0;
+  desde = Number(desde);*/
+
+  let desde = req.params.desde;
   desde = Number(desde);
 
+  const inmueble = await Inmueble.find({usuario: { $in: req.usuario._id}});
+    if(inmueble){
+        const visita = await Visita.find({inmueble: { $in: inmueble}})  
+        .populate('usuarioarrendatario', 'nombre apellido correo movil cedula')
+        .populate('inmueble')
+        .skip(desde)
+        .limit(5)
+        .exec((err, visitas) => {
+          if (err) {
+            return res.status(500).json({
+              ok: false,
+              mensaje: "Error cargando visita",
+              errors: err,
+            });
+          }
+      
+        
+            Visita.countDocuments({usuarioarrendatario: { $in: req.usuario._id}}, (err, conteo) => {
+      
+              if (err) {
+                return res.status(500).json({
+                  ok: false,
+                  mensaje: "Error contando usuarios",
+                  errors: err,
+                });
+              }
+        
+             
+        
+              res.status(200).json({
+                ok: true,
+                visitas: visitas,
+                total: conteo
+              });
+            });
+      
+      
+          
+      
+          
+        });
+    }
+   
 
-  Visita.find({}).populate('usuario', 'nombre correo').populate('inmueble')
+  /*Visita.find({usuarioarrendatario: { $in: req.usuario._id}})
+  .populate('usuarioarrendatario', 'nombre apellido correo movil cedula')
+  .populate('inmueble')
   .skip(desde)
   .limit(5)
   .exec((err, visitas) => {
@@ -25,32 +73,41 @@ app.get("/", (req, res, next) => {
       });
     }
 
-    Visita.count({}, (err, conteo) => {
-
-      if (err) {
-        return res.status(500).json({
-          ok: false,
-          mensaje: "Error contando usuarios",
-          errors: err,
-        });
-      }
-
-      res.status(200).json({
-        ok: true,
-        visitas: visitas,
-        total: conteo
-      });
+    visitas.forEach(visit => {
+      console.log(visit.inmueble.usuario)
+      
     });
+      Visita.countDocuments({usuarioarrendatario: { $in: req.usuario._id}}, (err, conteo) => {
+
+        if (err) {
+          return res.status(500).json({
+            ok: false,
+            mensaje: "Error contando usuarios",
+            errors: err,
+          });
+        }
+  
+       
+  
+        res.status(200).json({
+          ok: true,
+          visitas: visitas,
+          total: conteo
+        });
+      });
+
 
     
-  });
+
+    
+  });*/
 });
 
 //OBTENER UN INMUEBLE ESPECIFICO
-app.get('/:id', (req, res) => {
+app.get('/:id', mdwareAutenticacion.verificaToken, (req, res) => {
   let id = req.params.id;
   Visita.findById(id)
-    .populate('usuario', 'nombre correo').populate('inmueble')
+    .populate('usuario', 'nombre apellido correo movil cedula').populate('inmueble')
     .exec((err, visita) => {
       if (err) {
         return res.status(500).json({
@@ -100,7 +157,7 @@ app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
     visita.fecha = body.fecha;
     visita.descripcion = body.descripcion;
     visita.estado = body.estado;
-    visita.usuario = req.usuario._id;
+    visita.usuarioarrendatario = req.usuarioarrendatario._id;
     visita.inmueble = body.inmueble;
 
 
@@ -129,7 +186,7 @@ app.post("/", mdwareAutenticacion.verificaToken, (req, res) => {
     fecha: body.fecha,
     descripcion: body.descripcion,
     estado: body.estado,
-    usuario: req.usuario._id,
+    usuarioarrendatario: body.usuarioarrendatario,
     inmueble: body.inmueble
 
   });

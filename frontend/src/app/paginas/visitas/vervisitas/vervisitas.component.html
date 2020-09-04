@@ -1,0 +1,60 @@
+
+<div class="container ">
+  <div class="row md-12">
+    <div class="col-md-6 mx-auto">
+  <div class="card">
+    <div class="card-body">
+      <form #formaVisita="ngForm" (ngSubmit)="modificarVisita(formaVisita)" class="form p-t-20">
+        <div class="row">
+          <div class="col">
+            <span *ngIf="formaVisita.submitted && formaVisita.controls['descripcion'].errors"
+              class="text-danger animated fadeIn">La descripcion es obligatorio</span>
+            <div class="form-group">
+              <label><b>Descripción de la visita</b></label>
+              <div class="input-group">
+                <div class="input-group-addon"></div>
+                <input [ngModel]="visitas.descripcion" name="descripcion" type="text" class="form-control" required
+                  placeholder="Escriba una descripcion para su visita">
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="form-group text-center m-t-20">
+          <div class="col-xs-12">
+            <button class="btn btn-block btn-lg btn-info btn-rounded" type="submit">
+              Guardar visita
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+ <!-- .row -->
+ <div class="row">
+  <!-- .col -->
+  <div class="col-md-6 col-lg-6 col-xlg-4">
+      <div class="card card-body">
+          <div class="row">
+              <div class="col-md-4 col-lg-3 text-center">
+                  <a href="app-contact-detail.html"><img src="../assets/images/users/1.jpg" alt="user" class="img-circle img-responsive"></a>
+              </div>
+              <div class="col-md-8 col-lg-9">
+                  <h3 class="box-title m-b-0">Johnathan Doe</h3> <small>Web Designer</small>
+                  <address>
+                      795 Folsom Ave, Suite 600 San Francisco, CADGE 94107
+                      <br/>
+                      <br/>
+                      <abbr title="Phone">P:</abbr> (123) 456-7890
+                  </address>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- /.col -->
+</div>
+<!-- /.row -->

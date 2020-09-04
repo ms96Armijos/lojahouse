@@ -41,7 +41,7 @@
                       [cdkDropListConnectedTo]="[doneList]" class="item-list" (cdkDropListDropped)="drop($event)">
                       <div class="item-box" *ngFor="let item of servicios" cdkDrag>{{item.nombre}}</div>
                     </div>
-                    <div class="row">
+                    <div style="text-align: center;">
                       <button (click)="cambiarPaginacion(-5)" class="btn btn-secondary btn-sm m-r-5">←</button>
                       <button (click)="cambiarPaginacion(5)" class="btn btn-secondary btn-sm">→</button>
                     </div>

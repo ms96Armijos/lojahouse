@@ -32,7 +32,7 @@ export class InterceptorService implements HttpInterceptor{
           localStorage.removeItem('token');
           localStorage.removeItem('usuario');
           localStorage.removeItem('id');
-          this.router.navigateByUrl('/login');
+          this.router.navigate(['/login']);
         }
 
         return throwError( err );

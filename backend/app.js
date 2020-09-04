@@ -24,7 +24,11 @@ let cambiarPassword = require('./rutas/cambiarPassword');
 let reseteoPassword = require('./rutas/reseteoPassword');
 let inmuebleRutas = require('./rutas/inmueble');
 let desactivarInmueble = require('./rutas/desactivarinmueble');
+let aceptarVisita = require('./rutas/aceptarvisita');
 let servicioRutas = require('./rutas/servicio');
+let contratoRutas = require('./rutas/contrato');
+
+let enviarmensajes = require('./rutas/enviarmensajes');
 
 
 let visitaRutas = require('./rutas/visita');
@@ -50,12 +54,16 @@ mongoose.connection.openUri("mongodb://localhost:27017/lojahouseDB",
 app.use('/usuario', usuarioRutas);
 app.use('/inmueble', inmuebleRutas);
 app.use('/servicio', servicioRutas);
+app.use('/contrato', contratoRutas);
+
+app.use('/mensaje',enviarmensajes);
 
 app.use('/visita', visitaRutas);
 app.use('/login', loginRutas);
 app.use('/password', cambiarPassword);
 app.use('/resetpassword', reseteoPassword);
 app.use('/desactivarinmueble',desactivarInmueble);
+app.use('/aceptarvisita',aceptarVisita);
 app.use('/busqueda', busquedaRutas);
 app.use('/upload', uploadRutas);
 app.use('/img',imagenesRutas);

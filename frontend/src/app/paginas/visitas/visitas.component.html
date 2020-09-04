@@ -9,40 +9,43 @@
       </div>
     </div>
   </div>
-
+  <!-- .row -->
+  <h3 class="card-title">Visitas registradas (<small>{{_serviceVisita.totalVisitas}}</small>)</h3>
   <div class="row">
-    <div class="col-12">
-      <div class="card">
-        <div class="card-body">
+    <!-- .col -->
+    <div class="col-md-6 col-lg-6 col-xlg-4" *ngFor="let visita of visitas">
+      <div class="card card-body">
+        <div class="row">
+          <div class="col-md-4 col-lg-3 text-center">
+            <a [routerLink]="['/vervisita', visita._id]"><img src="../assets/images/users/1.jpg"
+                class="img-circle img-responsive"></a>
+          </div>
+          <div class="col-md-8 col-lg-9">
+           <a [routerLink]="['/vervisita', visita._id]"> <h3 class="box-title m-b-0">{{visita.usuarioarrendatario.nombre}}</h3> </a>
+            <hr>
+            <small><b>Fecha de visita</b>: {{visita.fecha}}</small>
+            <address>
+              <small><b>Descripción acerca de la visita</b><br>{{visita.descripcion}}</small><br>
+            </address>
+            <p>Me gustaría visitar su {{visita.inmueble.tipo}} en alquiler</p>
 
-          <table class="table table-hover" style="width:100%">
-            <thead>
-              <tr>
-                <th>Interesado</th>
-                <th>Fecha</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
+            <p style="text-align: right;">La visita está: <b>{{visita.estado}}</b></p>
+<hr>
+            <div style="text-align: right;">
+              <button (click)="aceptarVisita( visita )" class="btn btn-outline-primary m-l-5" ><abbr title="Aceptar visita"><i class="fa fa-check" aria-hidden="true"></i></abbr>
+              </button>
+              <button (click)="rechazarVisita( visita )" class="btn btn-outline-danger m-l-5"><abbr title="Rechazar visita"><i class="fa fa-remove" aria-hidden="true"></i></abbr></button>
+              <button [routerLink]="['/contratos', visita._id]" class="btn btn-outline-secondary m-l-5"><abbr title="Generar contrato de alquiler"><i class="fa fa-book" aria-hidden="true"></i></abbr></button>
+              <button (click)="borrarVisita( visita )" class="btn btn-danger m-l-5"><abbr title="Elimiar solicitud"><i class="fa fa-trash" aria-hidden="true"></i></abbr></button>
+            </div>
 
-            <tbody>
-              <tr *ngFor="let visita of visitas">
-                <td>{{visita.usuario.nombre}}</td>
-                <td>{{visita.fecha}}</td>
-                <td>{{visita.estado}}</td>
-                <td>
-                  <button  class="btn btn-primary">VER</button>
-                  <button  class="btn btn-primary m-l-5">ACEPTAR</button>
-                  <button  class="btn btn-primary m-l-5">RECHAZAR</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <button (click)="cambiarPaginacion(-6)" class="btn btn-secondary m-r-5">Anteriores</button>
-          <button (click)="cambiarPaginacion(6)" class="btn btn-secondary">Siguientes</button>
-
+          </div>
         </div>
       </div>
     </div>
+    <!-- /.col -->
   </div>
+  <!-- /.row -->
 </div>
+
+

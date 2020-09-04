@@ -170,6 +170,11 @@ export class UsuarioService {
 
   }
 
+  obtenerUsuario(id: string) {
+    const url = URL_SERVICIOS + '/usuario/' + id;
+    return this.http.get(url).pipe(map((resp: any) => resp.usuario));
+  }
+
   cargarUsuarios(desde: number = 0) {
     const url = URL_SERVICIOS + '/usuario?desde=' + desde;
 

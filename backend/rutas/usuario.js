@@ -46,6 +46,34 @@ app.get("/", (req, res, next) => {
     });
 });
 
+//OBTENER UN SERVICIO ESPECIFICO
+app.get('/:id', (req, res) => {
+  let id = req.params.id;
+  Usuario.findById(id)
+    .exec((err, usuario) => {
+      if (err) {
+        return res.status(500).json({
+          ok: false,
+          mensaje: 'Error al buscar usuario',
+          errors: err
+        });
+      }
+      if (!usuario) {
+        return res.status(400).json({
+          ok: false,
+          mensaje: 'El usuario con el id: ' + id + ' no existe',
+          errors: { message: 'No existe el usuario con ese ID' }
+        });
+      }
+
+      res.status(200).json({
+        ok: true,
+        usuario: usuario
+      })
+    })
+});
+
+
 //ACTUALIZAR UN USUARIO
 app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
   let id = req.params.id;
@@ -109,7 +137,9 @@ app.post("/", (req, res) => {
     auth: {
       user: 'testplagios@gmail.com',
       pass: 'plagios123'
-    }
+    },
+    debug: true, // show debug output
+    logger: true // log information in console
   });
 
 
@@ -161,22 +191,24 @@ app.post("/", (req, res) => {
       });
 
     }
-
-    res.status(201).json({
+  
+    // Enviamos el email
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        return console.log(error);
+         //return res.status(500).send(error.message);
+        //return res.send(500, error.message);
+      } else {
+        console.log("Correo Electrónico enviado satisfactoriamente: ", req.body.nombre);
+        return res.status(200).json(req.body);
+      }
+    });
+    
+    return res.status(201).json({
       ok: true,
       usuario: usuarioGuardado,
     });
 
-    // Enviamos el email
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error);
-        res.send(500, error.message);
-      } else {
-        console.log("Correo Electrónico enviado satisfactoriamente: ", req.body.nombre);
-        res.status(200).json(req.body);
-      }
-    });
   });
 });
 

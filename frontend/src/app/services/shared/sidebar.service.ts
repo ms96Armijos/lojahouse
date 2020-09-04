@@ -12,7 +12,7 @@ export class SidebarService {
         { titulo: ' Dashboard', url: '/dashboard' },
         { titulo: ' Gestión de Inmuebles ', url: '/inmuebles' },
         { titulo: ' Gestión de visitas ', url: '/visitas' },
-        { titulo: ' Gestión de Contratos de Alquiler ', url: '/gestion-contratos' },
+        { titulo: ' Gestión de Contratos de Alquiler ', url: '/vercontrato' },
         { titulo: ' Alquilar inmueble ', url: '/alquilar-inmueble' }
       ],
     },

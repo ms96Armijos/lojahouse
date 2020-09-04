@@ -4,6 +4,9 @@ import { UsuarioService } from './../usuario/usuario.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, catchError } from 'rxjs/operators';
+import swal from 'sweetalert';
+import { throwError } from 'rxjs';
+
 
 
 @Injectable({
@@ -18,7 +21,8 @@ export class VisitasService {
   constructor( public http: HttpClient, public _usuarioService: UsuarioService ) {  }
 
   cargarVisitas(desde: number = 0) {
-    const url = URL_SERVICIOS + '/visita?desde=' + desde;
+    let url = URL_SERVICIOS + '/visita/allvisitas/' + desde;
+    url += '?token=' + this._usuarioService.token;
     return this.http.get(url).pipe(
       map((resp: any) => {
         this.totalVisitas = resp.total;
@@ -30,14 +34,48 @@ export class VisitasService {
 
 
   obtenerVisita(id: string) {
-    const url = URL_SERVICIOS + '/visita/' + id;
-    return this.http.get(url).pipe(map((resp: any) => resp.visitas));
+    let url = URL_SERVICIOS + '/visita/' + id;
+    url += '?token=' + this._usuarioService.token;
+    return this.http.get(url).pipe(map((resp: any) => resp.visita));
   }
 
   buscarVisitas(termino: string) {
-    const url = URL_SERVICIOS + '/busqueda/coleccion/visitas/' + termino;
+    let url = URL_SERVICIOS + '/busqueda/coleccion/visitas/' + termino;
+    url += '?token=' + this._usuarioService.token;
     return this.http.get(url)
       .pipe(map((resp: any) => resp.visitas));
+  }
+
+  aceptarVisita(visita: Visita) {
+    let url = URL_SERVICIOS + '/aceptarvisita/' + visita._id;
+    url += '?token=' + this._usuarioService.token;
+
+    return this.http.put(url, visita)
+      .pipe(map((resp: any) => resp.visita));
+  }
+
+  borrarVisita(id: string) {
+    let url = URL_SERVICIOS + '/visita/' + id;
+    url += '?token=' + this._usuarioService.token;
+
+    return this.http.delete(url).pipe(
+      map((resp: any) => {
+        swal(
+          'Visita eliminado',
+          'Se ha eliminado la visita',
+          'success'
+        );
+        return true;
+      }),
+      catchError((err) => {
+        swal(
+          'Uppss...' + err.error.mensaje,
+          ' No se ha podido eliminar la visita',
+          'error'
+        );
+        return throwError(err.error.mensaje);
+      })
+    );
   }
 
 }

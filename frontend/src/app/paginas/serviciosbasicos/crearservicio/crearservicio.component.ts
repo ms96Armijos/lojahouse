@@ -12,7 +12,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CrearservicioComponent implements OnInit {
 
-  servicios: Servicio = new Servicio('', '');
+  servicios: Servicio = new Servicio('', null);
 
 
   constructor(public _basicosService: ServiciosbasicosService,

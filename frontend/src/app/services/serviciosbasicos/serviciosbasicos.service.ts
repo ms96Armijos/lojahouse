@@ -18,7 +18,8 @@ export class ServiciosbasicosService {
   constructor( public http: HttpClient, public _usuarioService: UsuarioService) { }
 
   cargarServicios(desde: number = 0) {
-    const url = URL_SERVICIOS + '/servicio?desde=' + desde;
+    let url = URL_SERVICIOS + '/servicio/allservicios/' + desde;
+    url += '?token=' + this._usuarioService.token;
     return this.http.get(url).pipe(
       map((resp: any) => {
         this.totalServicios = resp.total;
@@ -81,13 +82,15 @@ export class ServiciosbasicosService {
 
 
   obtenerServicio(id: string) {
-    const url = URL_SERVICIOS + '/servicio/' + id;
+    let url = URL_SERVICIOS + '/servicio/' + id;
+    url += '?token=' + this._usuarioService.token;
     return this.http.get(url).pipe(map((resp: any) => resp.servicio));
   }
 
 
   buscarServicios(termino: string) {
-    const url = URL_SERVICIOS + '/busqueda/coleccion/servicios/' + termino;
+    let url = URL_SERVICIOS + '/busqueda/coleccion/servicios/' + termino;
+    url += '?token=' + this._usuarioService.token;
     return this.http.get(url)
       .pipe(map((resp: any) => resp.servicios));
   }

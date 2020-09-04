@@ -23,6 +23,11 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ServiciosbasicosComponent } from './serviciosbasicos/serviciosbasicos.component';
 import { CrearservicioComponent } from './serviciosbasicos/crearservicio/crearservicio.component';
 import { VisitasComponent } from './visitas/visitas.component';
+import { VervisitasComponent } from './visitas/vervisitas/vervisitas.component';
+import { PlantillaComponent } from './contrato/plantilla/plantilla.component';
+import { NuevoComponent } from './contrato/nuevo/nuevo.component';
+import { VercontratosComponent } from './contrato/vercontratos/vercontratos.component';
+import { InmuebleComponent } from './alquilar/inmueble/inmueble.component';
 
 
 @NgModule({
@@ -37,6 +42,11 @@ import { VisitasComponent } from './visitas/visitas.component';
     ServiciosbasicosComponent,
     CrearservicioComponent,
     VisitasComponent,
+    VervisitasComponent,
+    PlantillaComponent,
+    NuevoComponent,
+    VercontratosComponent,
+    InmuebleComponent,
   ],
   exports: [
     DashboardComponent,

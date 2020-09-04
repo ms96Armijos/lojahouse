@@ -6,12 +6,14 @@ let app = express();
 let Servicio = require("../modelos/servicio");
 
 //OBTENER TODOS LOS SERVICIOS
-app.get("/", (req, res, next) => {
+app.get("/allservicios/:desde", mdwareAutenticacion.verificaToken, (req, res, next) => {
 
-  let desde = req.query.desde || 0;
+  /*let desde = req.query.desde || 0;
+  desde = Number(desde);*/
+  let desde = req.params.desde;
   desde = Number(desde);
 
-  Servicio.find({})
+  Servicio.find({usuario: req.usuario._id})
     .skip(desde)
     .limit(6)
     .exec((err, servicios) => {
@@ -45,7 +47,7 @@ app.get("/", (req, res, next) => {
 
 
 //OBTENER UN SERVICIO ESPECIFICO
-app.get('/:id', (req, res) => {
+app.get('/:id', mdwareAutenticacion.verificaToken, (req, res) => {
   let id = req.params.id;
   Servicio.findById(id)
     .exec((err, servicio) => {
@@ -120,7 +122,8 @@ app.post("/", mdwareAutenticacion.verificaToken, (req, res) => {
   let body = req.body;
 
   let servicio = new Servicio({
-    nombre: body.nombre
+    nombre: body.nombre,
+    usuario: req.usuario._id
 
   });
 

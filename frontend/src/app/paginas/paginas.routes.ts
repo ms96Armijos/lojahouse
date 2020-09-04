@@ -1,3 +1,7 @@
+import { VercontratosComponent } from './contrato/vercontratos/vercontratos.component';
+import { PlantillaComponent } from './contrato/plantilla/plantilla.component';
+import { NuevoComponent } from './contrato/nuevo/nuevo.component';
+import { VervisitasComponent } from './visitas/vervisitas/vervisitas.component';
 import { VisitasComponent } from './visitas/visitas.component';
 import { CrearservicioComponent } from './serviciosbasicos/crearservicio/crearservicio.component';
 import { ServiciosbasicosComponent } from './serviciosbasicos/serviciosbasicos.component';
@@ -26,7 +30,11 @@ const paginasRoutes: Routes = [
       { path: 'crearinmueble/:id', component: CrearinmuebleComponent, data: {titulo: 'Crear Inmueble'} },
       { path: 'perfil', component: PerfilComponent, data: {titulo: 'Perfil de usuario'} },
       { path: 'cambiarpassword', component: RecuperarpasswordComponent, data: {titulo: 'Cambiar Contraseña'} },
-      { path: 'visitas', component: VisitasComponent, data: {titulo: 'Visitas'} },
+      { path: 'visitas', component: VisitasComponent, data: {titulo: 'Solicitudes de visitas'} },
+      { path: 'vervisita/:id', component: VervisitasComponent, data: {titulo: 'Ver visita'} },
+      { path: 'contratos/:id', component: NuevoComponent, data: {titulo: 'Contratos'} },
+      { path: 'plantillacontrato/:id', component: PlantillaComponent, data: {titulo: 'Plantilla contrato'} },
+      { path: 'vercontrato', component: VercontratosComponent, data: {titulo: 'Lista de contratos'} },
 
       //CONFIGURACIONES:
       { path: 'usuarios', component: UsuariosComponent, data: {titulo: 'Configuración de usuario'} },

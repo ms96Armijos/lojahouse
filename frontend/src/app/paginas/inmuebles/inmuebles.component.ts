@@ -17,7 +17,7 @@ export class InmueblesComponent implements OnInit {
   //inmueble: any;
   inmuebles: Inmueble[] = [];
   imagenTemporal: string;
-  desde = 0;
+  desde: number = 0;
 
 
   constructor(public _inmuebleService: InmueblesService, public toastr: ToastrService) { }
@@ -33,7 +33,7 @@ export class InmueblesComponent implements OnInit {
   }
 
   cambiarPaginacion(valor: number) {
-    const desde = this.desde + valor;
+    const desde: number = this.desde + valor;
 
     if (desde >= this._inmuebleService.totalInmuebles) {
       this.toastr.error('Solo existen ' + this._inmuebleService.totalInmuebles + ' items', 'Ya no se puede avanzar más');

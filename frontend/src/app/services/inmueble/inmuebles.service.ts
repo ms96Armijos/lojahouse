@@ -11,7 +11,7 @@ import swal from 'sweetalert';
   providedIn: 'root',
 })
 export class InmueblesService {
-  totalInmuebles = 0;
+  totalInmuebles: number = 0;
 
   constructor(
     public http: HttpClient,
@@ -19,7 +19,10 @@ export class InmueblesService {
   ) { }
 
   cargarInmuebles(desde: number = 0) {
-    const url = URL_SERVICIOS + '/inmueble?desde=' + desde;
+    let url = URL_SERVICIOS + '/inmueble/allinmuebles/' + desde;
+      url += '?token=' + this._usuarioService.token;
+
+
     return this.http.get(url).pipe(
       map((resp: any) => {
         this.totalInmuebles = resp.total;
@@ -29,7 +32,8 @@ export class InmueblesService {
   }
 
   obtenerInmueble(id: string) {
-    const url = URL_SERVICIOS + '/inmueble/' + id;
+    let url = URL_SERVICIOS + '/inmueble/' + id;
+    url += '?token=' + this._usuarioService.token;
     return this.http.get(url).pipe(map((resp: any) => resp.inmueble));
   }
 
@@ -100,7 +104,8 @@ export class InmueblesService {
   }
 
   buscarInmuebles(termino: string) {
-    const url = URL_SERVICIOS + '/busqueda/coleccion/inmuebles/' + termino;
+    let url = URL_SERVICIOS + '/busqueda/coleccion/inmuebles/' + termino;
+    url += '?token=' + this._usuarioService.token;
     return this.http.get(url)
       .pipe(map((resp: any) => resp.inmuebles));
   }

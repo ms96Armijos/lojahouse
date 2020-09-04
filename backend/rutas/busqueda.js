@@ -3,13 +3,16 @@ let Inmueble = require("../modelos/inmueble");
 let Visita = require("../modelos/visita");
 let Usuario = require("../modelos/usuario");
 let Servicio = require('../modelos/servicio');
+let Contrato = require('../modelos/contrato');
+let mdwareAutenticacion = require('../middlewares/autenticacion');
 
 let app = express();
 //BUSQUEDAS ESPECIFICAS
-app.get("/coleccion/:tabla/:busqueda", (req, res) => {
+app.get("/coleccion/:tabla/:busqueda", mdwareAutenticacion.verificaToken, (req, res) => {
   let busqueda = req.params.busqueda;
   let tabla = req.params.tabla;
   let expresionRegular = new RegExp(busqueda, "i");
+  let auth = req.usuario._id;
 
   let promesa;
 
@@ -18,15 +21,20 @@ app.get("/coleccion/:tabla/:busqueda", (req, res) => {
       promesa = buscarUsuarios(busqueda, expresionRegular);
       break;
     case "visitas":
-      promesa = buscarVisitas(busqueda, expresionRegular);
+      promesa = buscarVisitas(busqueda, expresionRegular, auth);
       break;
     case "inmuebles":
-      promesa = buscarInmuebles(busqueda, expresionRegular);
+      promesa = buscarInmuebles(busqueda, expresionRegular, auth);
       break;
 
     case "servicios":
-      promesa = buscarServicios(busqueda, expresionRegular);
+      promesa = buscarServicios(busqueda, expresionRegular, auth);
       break;
+
+    case "contratos":
+      promesa = buscarContratos(busqueda, expresionRegular, auth);
+      break;
+
 
     default:
       return res.status(400).json({
@@ -50,10 +58,11 @@ app.get("/todo/:busqueda", (req, res, next) => {
   let expresionRegular = new RegExp(busqueda, "i");
 
   Promise.all([
-    buscarInmuebles(busqueda, expresionRegular),
-    buscarVisitas(busqueda, expresionRegular),
+    buscarInmuebles(busqueda, expresionRegular, auth),
+    buscarVisitas(busqueda, expresionRegular, auth),
     buscarUsuarios(busqueda, expresionRegular),
-    buscarServicios(busqueda, expresionRegular),
+    buscarServicios(busqueda, expresionRegular, auth),
+    buscarContratos(busqueda, expresionRegular, auth),
   ])
     .then((respuestas) => {
       res.status(200).json({
@@ -62,14 +71,15 @@ app.get("/todo/:busqueda", (req, res, next) => {
         visitas: respuestas[1],
         usuarios: respuestas[2],
         servicios: respuesta[3],
+        contratos: respuesta[4],
       });
     })
     .catch();
 });
 
-function buscarInmuebles(busqueda, expresionRegular) {
+function buscarInmuebles(busqueda, expresionRegular, auth) {
   return new Promise((resolve, reject) => {
-    Inmueble.find({ nombre: expresionRegular })
+    Inmueble.find({ nombre: expresionRegular, usuario: auth})
       .populate("usuario", "nombre apellido correo")
       .exec((err, inmuebles) => {
         if (err) {
@@ -81,11 +91,15 @@ function buscarInmuebles(busqueda, expresionRegular) {
   });
 }
 
-function buscarVisitas(busqueda, expresionRegular) {
-  return new Promise((resolve, reject) => {
-    Visita.find({})
-    .or([{ fecha: expresionRegular }, { descripcion: expresionRegular }, { estado: expresionRegular }])
-      .populate("usuario", " nombre apellido correo")
+function buscarVisitas(busqueda, expresionRegular, auth) {
+  return new Promise(async (resolve, reject) => {
+
+    const inmueble = await Inmueble.find({usuario: { $in: auth}});
+
+    if(inmueble){
+       await Visita.find({inmueble: { $in: inmueble}}) 
+       .or([{ descripcion: expresionRegular }, { estado: expresionRegular }])
+      .populate("usuarioarrendatario", " nombre apellido correo")
       .populate("inmueble","nombre descripcion tipo direccion precioalquiler")
       .exec((err, visitas) => {
         if (err) {
@@ -93,7 +107,10 @@ function buscarVisitas(busqueda, expresionRegular) {
         } else {
           resolve(visitas);
         }
-      });
+      });      
+    }
+
+    
   });
 }
 function buscarUsuarios(busqueda, expresionRegular) {
@@ -110,14 +127,27 @@ function buscarUsuarios(busqueda, expresionRegular) {
   });
 }
 
-function buscarServicios(busqueda, expresionRegular) {
+function buscarServicios(busqueda, expresionRegular, auth) {
   return new Promise((resolve, reject) => {
-    Servicio.find({ nombre: expresionRegular })
+    Servicio.find({ nombre: expresionRegular, usuario: auth })
       .exec((err, servicios) => {
         if (err) {
           reject("Error al cargar Servicios", err);
         } else {
           resolve(servicios);
+        }
+      });
+  });
+}
+
+function buscarContratos(busqueda, expresionRegular, auth) {
+  return new Promise((resolve, reject) => {
+    Contrato.find({nombrecontrato: expresionRegular, usuarioarrendador: auth})
+      .exec((err, contratos) => { 
+        if (err) {
+          reject("Error al cargar Contratos", err);
+        } else {
+          resolve(contratos);
         }
       });
   });

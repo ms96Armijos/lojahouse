@@ -26,7 +26,8 @@ let inmuebleSchema = new Schema({
     garantia: {type: Number},
     estado: {type: String, required: true, default: 'OCUPADO', enum: estadosValidos},
     publicado: {type: String, required: true, default: 0, enum: publicadoValidos},
-    usuario: {type: Schema.Types.ObjectId, ref: 'Usuario'}
+    usuario: {type: Schema.Types.ObjectId, ref: 'Usuario'},
+    timestamp: { type: Date, default: Date.now }
 }, { collation: 'inmuebles'});
 
 module.exports = mongoose.model('Inmueble', inmuebleSchema);

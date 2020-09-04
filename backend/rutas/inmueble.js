@@ -7,12 +7,14 @@ let Inmueble = require("../modelos/inmueble");
 const { populate } = require("../modelos/inmueble");
 
 //OBTENER TODOS LOS USUARIOS
-app.get("/", (req, res, next) => {
+app.get("/allinmuebles/:desde", mdwareAutenticacion.verificaToken, (req, res, next) => {
 
-  let desde = req.query.desde || 0;
+  /*let desde = req.query.desde || 0;
+  desde = Number(desde);*/
+  let desde = req.params.desde;
   desde = Number(desde);
 
-  Inmueble.find({})
+  Inmueble.find({usuario: req.usuario._id})
   .populate('usuario', 'nombre correo')
     .skip(desde)
     .limit(6)
@@ -25,7 +27,7 @@ app.get("/", (req, res, next) => {
         });
       }
 
-      Inmueble.countDocuments({}, (err, conteo) => {
+      Inmueble.countDocuments({usuario: req.usuario._id}, (err, conteo) => {
 
         if (err) {
           return res.status(500).json({
@@ -48,7 +50,7 @@ app.get("/", (req, res, next) => {
 
 
 //OBTENER UN INMUEBLE ESPECIFICO
-app.get('/:id', (req, res) => {
+app.get('/:id', mdwareAutenticacion.verificaToken, (req, res) => {
   let id = req.params.id;
   Inmueble.findById(id)
     .populate('usuario', 'nombre imagen correo')
@@ -74,7 +76,6 @@ app.get('/:id', (req, res) => {
       })
     })
 });
-
 
 
 //ACTUALIZAR UN NUEVO INMUEBLE

@@ -103,7 +103,7 @@ export class CrearinmuebleComponent implements OnInit {
     this.inmuebles.servicio = this.nuevservicios;
     this.inmuebles.estado = 'OCUPADO';
     this.inmuebles.publicado = '0';
-    this.inmuebles.usuario = this._usuarioService.usuario._id;
+    //this.inmuebles.usuario._id = this._usuarioService.usuario._id;
 
 
 
