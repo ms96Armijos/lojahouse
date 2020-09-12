@@ -89,10 +89,10 @@ export class InmueblesComponent implements OnInit {
 
     let estadoObtenido: string;
 
-    if (inmueble.publicado === '1') {
-      estadoObtenido = 'No público';
+    if (inmueble.publicado === 'PUBLICO') {
+      estadoObtenido = 'PRIVADO';
     } else {
-      estadoObtenido = 'Publicado';
+      estadoObtenido = 'PÚBLICO';
     }
 
     swal({
@@ -106,10 +106,12 @@ export class InmueblesComponent implements OnInit {
       dangerMode: true,
     }).then(borrar => {
       if (borrar) {
-        if (inmueble.publicado === '1') {
-          inmueble.publicado = '0';
+        if (inmueble.publicado === 'PUBLICO') {
+          inmueble.publicado = 'PRIVADO';
+          inmueble.estado = 'OCUPADO';
         } else {
-          inmueble.publicado = '1';
+          inmueble.publicado = 'PUBLICO';
+          inmueble.estado = 'DISPONIBLE';
         }
 
         this._inmuebleService.publicarInmueble(inmueble)

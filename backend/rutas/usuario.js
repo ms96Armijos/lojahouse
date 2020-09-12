@@ -49,7 +49,7 @@ app.get("/", (req, res, next) => {
 //OBTENER UN SERVICIO ESPECIFICO
 app.get('/:id', (req, res) => {
   let id = req.params.id;
-  Usuario.findById(id)
+  Usuario.findById(id, "nombre apellido correo imagen movil estado rol")
     .exec((err, usuario) => {
       if (err) {
         return res.status(500).json({
@@ -174,14 +174,16 @@ app.post("/", (req, res) => {
     apellido: body.apellido,
     correo: body.correo,
     password: bcrypt.hashSync(passwordGenerada, 10),
-    imagen: body.imagen,
-    cedula: body.cedula,
     movil: body.movil,
-    convencional: body.convencional,
+    /*imagen: body.imagen,
+    cedula: body.cedula,
+    
+    convencional: body.convencional,*/
     estado: body.estado,
     rol: body.rol,
   });
 
+  console.log('contraseña: '+passwordGenerada);
   usuario.save((err, usuarioGuardado) => {
     if (err) {
       return res.status(400).json({

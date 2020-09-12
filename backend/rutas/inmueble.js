@@ -110,7 +110,7 @@ app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
     inmueble.garantia = body.garantia;
     inmueble.estado = body.estado;
     inmueble.publicado = body.publicado;
-    inmueble.usuario = req.usuario._id;
+    inmueble.usuario = body.usuario;
 
 
     inmueble.save((err, inmuebleGuardado) => {
@@ -145,7 +145,7 @@ app.post("/", mdwareAutenticacion.verificaToken, (req, res) => {
     garantia: body.garantia,
     estado: body.estado,
     publicado:body.publicado,
-    usuario: req.usuario._id
+    usuario: body.usuario
 
   });
 

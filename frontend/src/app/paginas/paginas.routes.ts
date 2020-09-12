@@ -1,7 +1,11 @@
+import { PublicadosComponent } from '../paginas/alquilar/publicados/publicados.component';
+import { VervisitasarrendatarioComponent } from './visitas/vervisitasArrendatario/vervisitasarrendatario.component';
+import { VisitasolicitadaComponent } from './visitas/visitasolicitada/visitasolicitada.component';
+import { CrearvisitaComponent } from './visitas/crearvisita/crearvisita/crearvisita.component';
+import { InmuebleComponent } from './alquilar/inmueble/inmueble.component';
 import { VercontratosComponent } from './contrato/vercontratos/vercontratos.component';
 import { PlantillaComponent } from './contrato/plantilla/plantilla.component';
 import { NuevoComponent } from './contrato/nuevo/nuevo.component';
-import { VervisitasComponent } from './visitas/vervisitas/vervisitas.component';
 import { VisitasComponent } from './visitas/visitas.component';
 import { CrearservicioComponent } from './serviciosbasicos/crearservicio/crearservicio.component';
 import { ServiciosbasicosComponent } from './serviciosbasicos/serviciosbasicos.component';
@@ -31,10 +35,19 @@ const paginasRoutes: Routes = [
       { path: 'perfil', component: PerfilComponent, data: {titulo: 'Perfil de usuario'} },
       { path: 'cambiarpassword', component: RecuperarpasswordComponent, data: {titulo: 'Cambiar Contraseña'} },
       { path: 'visitas', component: VisitasComponent, data: {titulo: 'Solicitudes de visitas'} },
-      { path: 'vervisita/:id', component: VervisitasComponent, data: {titulo: 'Ver visita'} },
+      { path: 'crearvisita/:id', component: CrearvisitaComponent, data: {titulo: 'Crear visita'} },
       { path: 'contratos/:id', component: NuevoComponent, data: {titulo: 'Contratos'} },
       { path: 'plantillacontrato/:id', component: PlantillaComponent, data: {titulo: 'Plantilla contrato'} },
       { path: 'vercontrato', component: VercontratosComponent, data: {titulo: 'Lista de contratos'} },
+      { path: 'alquilar/:id', component: InmuebleComponent, data: {titulo: 'Alquilar un inmueble'} },
+
+      { path: 'publicados', component: PublicadosComponent, data: {titulo: 'Inmuebles pulicados'} },
+
+
+      //ARRENDATARIO
+      { path: 'visitas-arrendatario', component: VisitasolicitadaComponent, data: {titulo: 'Visitas solicitadas'} },
+      { path: 'ver-visitas-arrendatario/:id', component: VervisitasarrendatarioComponent, data: {titulo: 'Visita solicitada'} },
+
 
       //CONFIGURACIONES:
       { path: 'usuarios', component: UsuariosComponent, data: {titulo: 'Configuración de usuario'} },

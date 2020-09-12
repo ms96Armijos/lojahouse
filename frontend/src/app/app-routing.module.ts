@@ -1,3 +1,4 @@
+import { PrincipalComponent } from './principal/principal/principal.component';
 import { ReseteopasswordComponent } from './login/reseteopassword/reseteopassword.component';
 import { RegistroComponent } from './login/registro.component';
 import { Pagina404Component } from './shared/pagina404/pagina404.component';
@@ -7,6 +8,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 
 const routes: Routes = [
+  { path: 'principal', component: PrincipalComponent },
   { path: 'login', component: LoginComponent },
   { path: 'registro', component: RegistroComponent },
   { path: 'reseteopassword', component: ReseteopasswordComponent, data: {titulo: 'Reseteo Contraseña'} },

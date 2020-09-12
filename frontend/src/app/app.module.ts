@@ -24,6 +24,7 @@ import { RecuperarpasswordComponent } from './login/cambiarpassword.component';
 import { ControlVerPassDirective } from './login/control-ver-pass.directive';
 import { ReseteopasswordComponent } from './login/reseteopassword/reseteopassword.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { PrincipalComponent } from './principal/principal/principal.component';
 
 
 
@@ -37,6 +38,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     RecuperarpasswordComponent,
     ControlVerPassDirective,
     ReseteopasswordComponent,
+    PrincipalComponent,
   ],
   imports: [
     BrowserModule,

@@ -35,6 +35,9 @@ app.get("/coleccion/:tabla/:busqueda", mdwareAutenticacion.verificaToken, (req, 
       promesa = buscarContratos(busqueda, expresionRegular, auth);
       break;
 
+    case "visitasarrendatario":
+      promesa = buscarVisitasArrendatario(busqueda, expresionRegular, auth);
+      break;
 
     default:
       return res.status(400).json({
@@ -63,6 +66,7 @@ app.get("/todo/:busqueda", (req, res, next) => {
     buscarUsuarios(busqueda, expresionRegular),
     buscarServicios(busqueda, expresionRegular, auth),
     buscarContratos(busqueda, expresionRegular, auth),
+    buscarVisitasArrendatario(busqueda, expresionRegular, auth),
   ])
     .then((respuestas) => {
       res.status(200).json({
@@ -72,9 +76,12 @@ app.get("/todo/:busqueda", (req, res, next) => {
         usuarios: respuestas[2],
         servicios: respuesta[3],
         contratos: respuesta[4],
+        visitasarrendatario: respuesta[5],
       });
     })
-    .catch();
+    .catch((err)=>{
+      console.log(err)
+    });
 });
 
 function buscarInmuebles(busqueda, expresionRegular, auth) {
@@ -109,10 +116,26 @@ function buscarVisitas(busqueda, expresionRegular, auth) {
         }
       });      
     }
+  });
+}
 
+function buscarVisitasArrendatario(busqueda, expresionRegular, auth) {
+  return new Promise((resolve, reject) => {
+
+       Visita.find({usuarioarrendatario: {$in: auth}}) 
+       .or([{ estado: expresionRegular }, {descripcion: expresionRegular}])
+      .exec((err, visitasarrendatario) => {
+        if (err) {
+          reject("Error al cargar Visitas", err);
+        } else {
+          resolve(visitasarrendatario);
+        }
+      });      
     
   });
 }
+
+
 function buscarUsuarios(busqueda, expresionRegular) {
   return new Promise((resolve, reject) => {
     Usuario.find({}, "correo movil estado rol")

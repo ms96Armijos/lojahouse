@@ -5,7 +5,7 @@ import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Inmueble } from './../../../modelos/inmueble.model';
 import { InmueblesService } from './../../../services/inmueble/inmuebles.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import * as swal from 'sweetalert';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { ToastrService } from 'ngx-toastr';
@@ -47,6 +47,7 @@ export class CrearinmuebleComponent implements OnInit {
     public toastr: ToastrService,
     public activatedRoute: ActivatedRoute) {
 
+
       activatedRoute.params.subscribe(parametros => {
         let id = parametros['id'];
 
@@ -60,10 +61,15 @@ export class CrearinmuebleComponent implements OnInit {
 
 
   ngOnInit(): void {
+
     this._basicosService.cargarServicios()
       .subscribe(servicios => {
         this.servicios = servicios;
       });
+
+
+
+
 
   }
 
@@ -71,11 +77,10 @@ export class CrearinmuebleComponent implements OnInit {
   obtenerInmueble(id: string){
     this._inmuebleService.obtenerInmueble( id )
     .subscribe( inmueble => {
-
-
       this.inmuebles = inmueble;
       console.log(this.inmuebles);
     });
+
   }
 
 
@@ -86,8 +91,7 @@ export class CrearinmuebleComponent implements OnInit {
       return;
     }
 
-
-
+    let idArrendador = localStorage.getItem('id');
 
     for (let serv of this.servicioselegidos) {
       //console.log(serv.nombre); // 1, "string", false
@@ -102,7 +106,8 @@ export class CrearinmuebleComponent implements OnInit {
     this.inmuebles.garantia = forma.value.garantia;
     this.inmuebles.servicio = this.nuevservicios;
     this.inmuebles.estado = 'OCUPADO';
-    this.inmuebles.publicado = '0';
+    this.inmuebles.publicado = 'PRIVADO';
+    this.inmuebles.usuario = Object(idArrendador);
     //this.inmuebles.usuario._id = this._usuarioService.usuario._id;
 
 
@@ -135,6 +140,9 @@ export class CrearinmuebleComponent implements OnInit {
   }
 
   cargarServicios() {
+
+
+
     this._basicosService.cargarServicios(this.desde)
       .subscribe(servicios => this.servicios = servicios);
   }

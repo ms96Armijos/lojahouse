@@ -119,5 +119,29 @@ export class InmueblesService {
   }
 
 
+  cargarInmueblesPulicos(desde: number = 0) {
+    const url = URL_SERVICIOS + '/inmueblepublico?desde=' + desde;
+
+    return this.http.get(url).pipe(
+      map((resp: any) => {
+        this.totalInmuebles = resp.total;
+        return resp.inmuebles;
+      })
+    );
+  }
+
+
+  cargarInmueblesPublicados(desde: number = 0) {
+    let url = URL_SERVICIOS + '/inmueblepublicado/' + desde;
+      url += '?token=' + this._usuarioService.token;
+
+
+    return this.http.get(url).pipe(
+      map((resp: any) => {
+        this.totalInmuebles = resp.total;
+        return resp.inmuebles;
+      })
+    );
+  }
 
 }

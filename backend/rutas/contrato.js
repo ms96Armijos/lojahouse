@@ -137,6 +137,9 @@ app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
 app.post("/", mdwareAutenticacion.verificaToken, (req, res) => {
   let body = req.body;
 
+  
+  console.log(body.nombrecontrato)
+  
   let contrato = new Contrato({
     nombrecontrato: body.nombrecontrato,
     fechainicio: body.fechainicio,

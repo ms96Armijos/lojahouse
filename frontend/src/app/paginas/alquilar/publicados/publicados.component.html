@@ -1,0 +1,55 @@
+<div class="container m-b-5">
+  <div class="row animate fadeIn">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <input #input (keyup)="buscarInmuebles(input.value)" type="text" class="form-control"
+            placeholder="Buscar inmuebles...">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+
+          <h3 class="card-title">Inmuebles publicados(<small>{{_inmuebleService.totalInmuebles}}</small>)</h3>
+
+          <div class="table-responsive m-t-40">
+            <div class="container p-4">
+              <div class="row">
+                <div class="card-columns text-center">
+                  <div class="card animated fadeIn" *ngFor="let inmueble of inmuebles">
+                    <h3 class="card-title">{{inmueble.nombre}}</h3>
+                    <img *ngIf="!imagenTemporal" [src]="inmueble.xxx | imagen" class="w150" alt="">
+                    <div class="card-body">
+                      <h6 class="card-text text-left">{{inmueble.direccion}}</h6>
+                      <p class=" card-text text-left">{{inmueble.descripcion}}</p>
+                      <p class="card-text text-left">{{inmueble.servicio}}</p>
+                      <p class="card-text text-right">$ {{inmueble.precioalquiler}}</p>
+
+
+
+
+                    </div>
+
+                    <button [routerLink]="['/alquilar', inmueble._id]" class="btn btn-block btn-primary"><abbr title="Alquilar inmueble"></abbr>Alquilar</button>
+
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button (click)="cambiarPaginacion(-5)" class="btn btn-secondary m-r-5">Anteriores</button>
+  <button (click)="cambiarPaginacion(5)" class="btn btn-secondary">Siguientes</button>
+
+
+</div>
+

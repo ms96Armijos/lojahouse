@@ -65,7 +65,7 @@ export class VisitasComponent implements OnInit {
 
     let estadoObtenido: string;
 
-    if (visita.estado === '' || visita.estado === 'RECHAZADA') {
+    if (visita.estado === 'PENDIENTE' || visita.estado === 'RECHAZADA') {
       estadoObtenido = 'ACEPTADA';
 
 
@@ -80,7 +80,7 @@ export class VisitasComponent implements OnInit {
         dangerMode: true,
       }).then(borrar => {
         if (borrar) {
-          if (visita.estado === 'RECHAZADA') {
+          if (visita.estado === 'PENDIENTE' || visita.estado === 'RECHAZADA') {
             visita.estado = 'ACEPTADA';
           }
 

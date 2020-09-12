@@ -21,13 +21,13 @@
                 class="img-circle img-responsive"></a>
           </div>
           <div class="col-md-8 col-lg-9">
-           <a [routerLink]="['/vervisita', visita._id]"> <h3 class="box-title m-b-0">{{visita.usuarioarrendatario.nombre}}</h3> </a>
+           <a [routerLink]="['/vervisita', visita._id]"> <h5 class="box-title m-b-0"><b>{{visita.usuarioarrendatario.nombre+' '+ visita.usuarioarrendatario.apellido}}</b></h5> </a>
             <hr>
-            <small><b>Fecha de visita</b>: {{visita.fecha}}</small>
-            <address>
-              <small><b>Descripción acerca de la visita</b><br>{{visita.descripcion}}</small><br>
-            </address>
-            <p>Me gustaría visitar su {{visita.inmueble.tipo}} en alquiler</p>
+            <h5><b>Fecha de visita</b>: {{visita.fecha |date:'dd-MM-yyyy'}}</h5>
+
+              <p><b>Descripción:</b><br>{{visita.descripcion}}</p>
+
+            <h6>Me interesa visitar su <b>{{visita.inmueble.tipo}}</b> en alquiler</h6>
 
             <p style="text-align: right;">La visita está: <b>{{visita.estado}}</b></p>
 <hr>

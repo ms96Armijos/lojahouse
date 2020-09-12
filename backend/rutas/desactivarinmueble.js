@@ -27,6 +27,7 @@ app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
       }
   
       inmueble.publicado = body.publicado;
+      inmueble.estado = body.estado;
       inmueble.usuario = req.usuario._id;
   
   

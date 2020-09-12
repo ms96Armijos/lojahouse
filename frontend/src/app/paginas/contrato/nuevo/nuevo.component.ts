@@ -6,7 +6,7 @@ import { Contrato } from './../../../modelos/contrato.model';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VisitasService } from './../../../services/visitas/visitas.service';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Visita } from "./../../../modelos/visita.model";
 import { ToastrService } from 'ngx-toastr';
 
@@ -35,6 +35,7 @@ export class NuevoComponent implements OnInit {
 
     }
   ngOnInit(): void {
+
   }
 
   obtenerVisita(id: string){
@@ -42,7 +43,6 @@ export class NuevoComponent implements OnInit {
     .subscribe( visita => {
 
       this.visitas = visita;
-     //console.log('visita: '+this.visitas.inmueble.nombre );
     });
   }
 
@@ -61,7 +61,12 @@ export class NuevoComponent implements OnInit {
       return;
     }
 
-    let nombrecontrato = this.visitas.usuarioarrendatario.cedula+'_'+forma.value.tipo;
+    let nombrecontrato = this.visitas.usuarioarrendatario.apellido+'_'+forma.value.tipo;
+
+    let inmuebles_id = this.visitas.inmueble._id;
+    let arrendador_id = this.usuarioarrendador._id;
+    let arrendatarioid = this.visitas.usuarioarrendatario._id;
+
 
     var StartDate = new Date(forma.value.fechainicio);
     var EndDate = new Date(forma.value.fechafin);
@@ -71,8 +76,8 @@ export class NuevoComponent implements OnInit {
 
     if(tiempocontrato > 0){
       const contrato = new Contrato(nombrecontrato, forma.value.fechainicio,
-        forma.value.fechafin, forma.value.monto, tiempocontrato, forma.value.inmueble_id,
-        forma.value.arrendador_id, forma.value.arrendatario_id);
+        forma.value.fechafin, forma.value.monto, tiempocontrato, Object(inmuebles_id),
+        Object(arrendador_id), Object(arrendatarioid));
 
       this._contratoService.crearContrato(contrato)
         .subscribe(/*resp => {

@@ -238,4 +238,11 @@ export class UsuarioService {
     );
   }
 
+  buscarArrendatario(correo: string){
+    const url = URL_SERVICIOS + '/buscarusuario/' + correo;
+    return this.http.get(url).pipe(map((resp: any) => resp.usuario),
+    catchError((err) => {
+      return throwError(err.error.mensaje);
+    }));
+}
 }

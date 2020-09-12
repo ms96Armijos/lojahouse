@@ -73,6 +73,7 @@ app.put("/", (req, res) => {
       usuario.correo = correo;
       usuario.password = bcrypt.hashSync(passwordGenerada, 10);
 
+      console.log('Recuperada: '+passwordGenerada)
       usuario.save((err, usuarioGuardado) => {
         if (err) {
           return res.status(400).json({
@@ -91,7 +92,7 @@ app.put("/", (req, res) => {
         transporter.sendMail(mailOptions, function (error) {
         if (error) {
           console.log(error);
-          res.send(500, error.message);
+          return res.status(200).json(error.message);
         } else {
           console.log("Correo Electrónico enviado satisfactoriamente: ", correo);
           res.status(200).json(req.body);

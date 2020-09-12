@@ -4,13 +4,12 @@ let Schema = mongoose.Schema;
 
 
 let estadosValidos = {
-    values: ['DISPONIBLE', 'OCUPADO'],
+    values: ['DISPONIBLE', 'OCUPADO', 'ELIMINADO'],
     message: '{VALUE} no es un estado permitido'
 }
 
 let publicadoValidos = {
-    //0=no publicado y 1=publicado
-    values: [1,0],
+    values: ['PUBLICO','PRIVADO'],
     message: '{VALUE} no es un estado permitido'
 }
 
@@ -25,9 +24,8 @@ let inmuebleSchema = new Schema({
     imagen: {type: Array,default: []},
     garantia: {type: Number},
     estado: {type: String, required: true, default: 'OCUPADO', enum: estadosValidos},
-    publicado: {type: String, required: true, default: 0, enum: publicadoValidos},
-    usuario: {type: Schema.Types.ObjectId, ref: 'Usuario'},
-    timestamp: { type: Date, default: Date.now }
-}, { collation: 'inmuebles'});
+    publicado: {type: String, required: true, default: 'PRIVADO', enum: publicadoValidos},
+    usuario: {type: Schema.Types.ObjectId, ref: 'Usuario'}
+}, {timestamps: true}, { collation: 'inmuebles'});
 
 module.exports = mongoose.model('Inmueble', inmuebleSchema);

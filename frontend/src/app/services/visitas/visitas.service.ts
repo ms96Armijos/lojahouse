@@ -18,7 +18,29 @@ export class VisitasService {
   visita: Visita;
   totalVisitas = 0;
 
-  constructor( public http: HttpClient, public _usuarioService: UsuarioService ) {  }
+  constructor(public http: HttpClient, public _usuarioService: UsuarioService) { }
+
+  crearVisita(visita: Visita) {
+    let url = URL_SERVICIOS + '/visita';
+
+    //SI NO EXISTE EL ID, CREA UN NUEVO SERVICIO
+    url += '?token=' + this._usuarioService.token;
+    return this.http.post(url, visita)
+      .pipe(
+        map((resp: any) => {
+          swal(
+            'Visita registrada!!',
+            'Se ha registrado su visita',
+            'success'
+          );
+          return true;
+        }),
+        catchError((err) => {
+          //swal('Uppss...' + '', ' La visita: ' + visita + ' ya existe, ingresa uno diferente', 'error');
+          return throwError(err.error.mensaje);
+        })
+      );
+  }
 
   cargarVisitas(desde: number = 0) {
     let url = URL_SERVICIOS + '/visita/allvisitas/' + desde;

@@ -13,7 +13,7 @@ app.get("/allservicios/:desde", mdwareAutenticacion.verificaToken, (req, res, ne
   let desde = req.params.desde;
   desde = Number(desde);
 
-  Servicio.find({usuario: req.usuario._id})
+  Servicio.find({})
     .skip(desde)
     .limit(6)
     .exec((err, servicios) => {

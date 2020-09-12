@@ -29,20 +29,25 @@
                     <img *ngIf="!imagenTemporal" [src]="inmueble.xxx | imagen" class="w150" alt="">
                     <div class="card-body">
                       <h6 class="card-text text-left">{{inmueble.direccion}}</h6>
-                      <p class="card-text text-left">{{inmueble.descripcion}}</p>
+                      <p class=" card-text text-left">{{inmueble.descripcion}}</p>
                       <p class="card-text text-left">{{inmueble.servicio}}</p>
                       <p class="card-text text-right">$ {{inmueble.precioalquiler}}</p>
 
 
-                      <button (click)="publicarInmueble( inmueble )"  [ngStyle]="{'background-color':inmueble.publicado == '1'? 'green':'red'}"  class="btn btn-outline-light btn-rounded">
-                        {{inmueble.publicado == '1' ? 'Publicado' : 'Publicar'}}</button>
+                      <button (click)="publicarInmueble( inmueble )"  [ngStyle]="{'background-color':inmueble.publicado == 'PUBLICO'? 'green':'red'}"  class="btn btn-outline-light btn-rounded">
+                        {{inmueble.publicado == 'PUBLICO' ? 'Publicado' : 'Publicar'}}</button>
 
 
                     </div>
-                    <button [routerLink]="['/crearinmueble', inmueble._id]" class="btn btn-primary"><i
-                      class="fa fa-save"></i></button>
-                    <button (click)="borrarInmueble(inmueble)" class="btn btn-danger"><i
-                        class="fa fa-trash"></i></button>
+
+                   <!-- <button [routerLink]="['/alquilar', inmueble._id]" class="btn btn-primary"><abbr title="Generar contrato"><i
+                      class="fa fa-book"></i></abbr></button>-->
+
+                    <button [routerLink]="['/crearinmueble', inmueble._id]" class="btn btn-primary  m-l-5"><abbr title="Editar inmueble"><i
+                      class="fa fa-save"></i></abbr></button>
+
+                    <button (click)="borrarInmueble(inmueble)" class="btn btn-danger  m-l-5"><abbr title="Eliminar inmueble"><i
+                      class="fa fa-trash"></i></abbr></button>
                   </div>
                 </div>
               </div>

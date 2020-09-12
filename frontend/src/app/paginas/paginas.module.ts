@@ -23,11 +23,14 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ServiciosbasicosComponent } from './serviciosbasicos/serviciosbasicos.component';
 import { CrearservicioComponent } from './serviciosbasicos/crearservicio/crearservicio.component';
 import { VisitasComponent } from './visitas/visitas.component';
-import { VervisitasComponent } from './visitas/vervisitas/vervisitas.component';
+import { VervisitasarrendatarioComponent } from './visitas/vervisitasArrendatario/vervisitasarrendatario.component';
 import { PlantillaComponent } from './contrato/plantilla/plantilla.component';
 import { NuevoComponent } from './contrato/nuevo/nuevo.component';
 import { VercontratosComponent } from './contrato/vercontratos/vercontratos.component';
 import { InmuebleComponent } from './alquilar/inmueble/inmueble.component';
+import { CrearvisitaComponent } from './visitas/crearvisita/crearvisita/crearvisita.component';
+import { VisitasolicitadaComponent } from './visitas/visitasolicitada/visitasolicitada.component';
+import { PublicadosComponent } from './alquilar/publicados/publicados.component';
 
 
 @NgModule({
@@ -42,11 +45,14 @@ import { InmuebleComponent } from './alquilar/inmueble/inmueble.component';
     ServiciosbasicosComponent,
     CrearservicioComponent,
     VisitasComponent,
-    VervisitasComponent,
+    VervisitasarrendatarioComponent,
     PlantillaComponent,
     NuevoComponent,
     VercontratosComponent,
     InmuebleComponent,
+    CrearvisitaComponent,
+    VisitasolicitadaComponent,
+    PublicadosComponent,
   ],
   exports: [
     DashboardComponent,

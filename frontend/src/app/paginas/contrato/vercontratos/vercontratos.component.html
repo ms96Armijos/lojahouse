@@ -18,17 +18,19 @@
           <table class="table table-hover" style="width:100%">
             <thead>
               <tr>
-                <th style="text-align: center;">Contrato</th>
-                <th style="text-align: center;">Inicio del contrato</th>
-                <th style="text-align: center;">Fin del contrato</th>
-                <th style="text-align: center;">Meses de alquiler</th>
-                <th style="text-align: center;">Acciones</th>
+                <th style="text-align: center;"><b>Inmueble</b></th>
+                <th style="text-align: center;"><b>Inquilino</b></th>
+                <th style="text-align: center;"><b>Inicio del contrato</b></th>
+                <th style="text-align: center;"><b>Fin del contrato</b></th>
+                <th style="text-align: center;"><b>Meses de alquiler</b></th>
+                <th style="text-align: center;"><b>Acciones</b></th>
               </tr>
             </thead>
 
             <tbody>
               <tr *ngFor="let contrato of contratos">
-                <td style="text-align: center;">{{contrato.nombrecontrato | uppercase}}</td>
+                <td>{{contrato.inmueble.tipo}}</td>
+                <td>{{contrato.usuarioarrendatario.nombre}}</td>
                 <td style="text-align: center;">{{contrato.fechainicio|date:'dd-MM-yyyy'}}</td>
                 <td style="text-align: center;">{{contrato.fechafin|date:'dd-MM-yyyy'}}</td>
                 <td style="text-align: center;">{{contrato.tiempocontrato}}</td>

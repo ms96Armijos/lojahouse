@@ -1,3 +1,4 @@
+import { Usuario } from './usuario.model';
 export class Inmueble {
 
   constructor(
@@ -12,7 +13,7 @@ export class Inmueble {
     public imagen?: Array<string>,
     public estado?: string,
     public publicado?: string,
-    public usuario?: string,
+    public usuario?: Usuario,
     public _id?: string
   ) { }
 

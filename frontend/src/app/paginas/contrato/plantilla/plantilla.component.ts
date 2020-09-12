@@ -47,7 +47,6 @@ export class PlantillaComponent implements OnInit {
   public openPDF() {
     const informacion = this.htmlData.nativeElement;
     const pdf = new jsPDF('p', 'pt', [630, 900]);
-
     pdf.fromHTML(informacion, 20, 10, { maxWidth: 150, align: 'justify' });
     pdf.output('dataurlnewwindow');
   }

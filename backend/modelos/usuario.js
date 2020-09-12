@@ -13,7 +13,7 @@ let estadosValidos = {
     message: '{VALUE} no es un estado permitido'
 }
 
-
+//REVISAR LA PROPIEDAD SELECT PARA LOS CAMPOS QUE QUIERO MOSTRAR
 
 let usuarioSchema = new Schema({
     nombre: {type: String, required: false},
@@ -26,9 +26,7 @@ let usuarioSchema = new Schema({
     convencional: {type: String, required: false},
     estado: {type: String, required:false, default: '1', enum: estadosValidos},
     rol: {type: String, required: true, default: 'ADMINISTRADOR', enum: rolesValidos},
-    timestamp: { type: Date, default: Date.now }
-
-});
+}, {timestamps: true},);
 
 usuarioSchema.plugin(uniqueValidator, {message: 'El {PATH} debe ser único'});
 

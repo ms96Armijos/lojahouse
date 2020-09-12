@@ -1,0 +1,54 @@
+
+<div class="container ">
+  <div class="row md-12">
+    <div class="col-md-6 mx-auto">
+  <div class="card">
+    <div class="card-body">
+      <form #formaVisita="ngForm" (ngSubmit)="crearVisita(formaVisita)" class="form p-t-20">
+        <div class="row">
+          <div class="col">
+
+            <div class="form-group row">
+
+              <div class="col-12">
+                <h6 for="example-date-input">Inmueble</h6>
+                <input [ngModel] ="inmuebles.nombre" name="nombre" disabled class="form-control" type="text">
+              </div>
+
+
+              <div class="col-12 m-t-10">
+                <h6 for="example-date-input">Fecha de visita</h6>
+                <input ngModel name="fecha" name="fecha" class="form-control" type="date">
+              </div>
+
+
+              <div class="col-md-12 form-group m-t-10">
+                <label for="celular">Descripcion</label>
+                <div class="input-group">
+                  <div class="input-group-addon"></div>
+                  <textarea ngModel name="descripcion" type="text" required class="form-control"
+                  aria-label="With textarea"></textarea>
+                </div>
+                <span *ngIf="formaVisita.submitted && formaVisita.controls['descripcion'].errors"
+              class="text-danger animated fadeIn m-l-10">Ingrese una descripcion</span>
+              </div>
+
+
+            </div>
+
+
+          </div>
+        </div>
+        <div class="form-group text-center m-t-20">
+          <div class="col-xs-12">
+            <button class="btn btn-block btn-lg btn-info btn-rounded" type="submit">
+              Solicitar visita
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+</div>

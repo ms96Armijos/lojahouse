@@ -8,8 +8,15 @@ let app = express();
 //CREAR UN NUEVO USUARIO
 app.post("/", (req, res) => {
 
-
-  
+  /*let transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+      user: 'testplagios@gmail.com',
+      pass: 'plagios123'
+    },
+    debug: true, // show debug output
+    logger: true // log information in console
+  });*/
 
 
   var transport = mailer.createTransport({

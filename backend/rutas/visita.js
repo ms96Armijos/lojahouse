@@ -32,7 +32,7 @@ app.get("/allvisitas/:desde", mdwareAutenticacion.verificaToken, async (req, res
           }
       
         
-            Visita.countDocuments({usuarioarrendatario: { $in: req.usuario._id}}, (err, conteo) => {
+            Visita.countDocuments({inmueble: { $in: inmueble}}, (err, conteo) => {
       
               if (err) {
                 return res.status(500).json({
@@ -107,7 +107,7 @@ app.get("/allvisitas/:desde", mdwareAutenticacion.verificaToken, async (req, res
 app.get('/:id', mdwareAutenticacion.verificaToken, (req, res) => {
   let id = req.params.id;
   Visita.findById(id)
-    .populate('usuario', 'nombre apellido correo movil cedula').populate('inmueble')
+    .populate('usuarioarrendatario', 'nombre apellido correo movil cedula').populate('inmueble')
     .exec((err, visita) => {
       if (err) {
         return res.status(500).json({
@@ -186,9 +186,8 @@ app.post("/", mdwareAutenticacion.verificaToken, (req, res) => {
     fecha: body.fecha,
     descripcion: body.descripcion,
     estado: body.estado,
-    usuarioarrendatario: body.usuarioarrendatario,
-    inmueble: body.inmueble
-
+    inmueble: body.inmueble,
+    usuarioarrendatario: body.usuarioarrendatario
   });
 
   visita.save((err, visitaGuardado) => {

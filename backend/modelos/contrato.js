@@ -28,7 +28,6 @@ let contratoSchema = new Schema({
     inmueble: {type: Schema.Types.ObjectId, ref: 'Inmueble'},
     usuarioarrendador: {type: Schema.Types.ObjectId, ref: 'Usuario'},
     usuarioarrendatario: {type: Schema.Types.ObjectId, ref: 'Usuario'},
-    timestamp: { type: Date, default: Date.now }
-});
+}, {timestamps: true});
 
 module.exports = mongoose.model('Contrato', contratoSchema);

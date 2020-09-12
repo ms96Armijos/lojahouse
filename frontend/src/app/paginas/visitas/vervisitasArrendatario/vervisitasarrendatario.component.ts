@@ -1,15 +1,18 @@
 import { NgForm } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { VisitasService } from './../../../services/visitas/visitas.service';
-import { Visita } from "./../../../modelos/visita.model";
+import { VisitasService } from '../../../services/visitas/visitas.service';
+import { Visita } from "../../../modelos/visita.model";
 import { Component, OnInit } from "@angular/core";
+
+//LLAMAR UNA FUNCION DE JQUERY FUERA DE ANGULAR
+declare function init_plugins();
 
 @Component({
   selector: "app-vervisitas",
-  templateUrl: "./vervisitas.component.html",
+  templateUrl: "./vervisitasarrendatario.component.html",
   styles: [],
 })
-export class VervisitasComponent implements OnInit {
+export class VervisitasarrendatarioComponent implements OnInit {
   visitas: Visita = new Visita(null, null, null, null, null);
 
   constructor(public _visitaService: VisitasService,
@@ -23,7 +26,9 @@ export class VervisitasComponent implements OnInit {
       });
     }
 
-    ngOnInit(): void { }
+    ngOnInit(): void {
+      init_plugins();
+    }
 
     obtenerVisita(id: string){
       this._visitaService.obtenerVisita( id )
