@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 export class UsuarioService {
   usuario: Usuario;
   token: string;
-
+  menu: any[] = [];
 
 
   constructor(public http: HttpClient, public router: Router, public servicioSubirArchivo: SubirArchivoService) {
@@ -32,28 +32,34 @@ export class UsuarioService {
   cargarStorage() {
     if (localStorage.getItem('token')) {
       this.token = localStorage.getItem('token');
-      this.usuario = JSON.parse(localStorage.getItem('usuario'));
+      //this.usuario = JSON.parse(localStorage.getItem('usuario'));
+      this.menu = JSON.parse(localStorage.getItem('menu'));
     } else {
       this.token = '';
-      this.usuario = null;
+      //this.usuario = null;
+      this.menu = [];
     }
   }
 
-  guardarDatosEnStorage(id: string, token: string, usuario: Usuario) {
+  guardarDatosEnStorage(id: string, token: string,  menu: any) {
     localStorage.setItem('id', id);
     localStorage.setItem('token', token);
-    localStorage.setItem('usuario', JSON.stringify(usuario));
+    //localStorage.setItem('usuario', JSON.stringify(usuario));
+    localStorage.setItem('menu', JSON.stringify(menu));
 
-    this.usuario = usuario;
+    //this.usuario = usuario;
     this.token = token;
+    this.menu = menu;
   }
 
   eliminarStorage() {
     this.token = '';
-    this.usuario = null;
+    //this.usuario = null;
+    this.menu = [];
     localStorage.removeItem('token');
-    localStorage.removeItem('usuario');
+    //localStorage.removeItem('usuario');
     localStorage.removeItem('id');
+    localStorage.removeItem('menu');
   }
 
   //FUNCIONA PARA SALIR DE LA APLICACION
@@ -84,10 +90,9 @@ export class UsuarioService {
     return this.http.post(url, usuario).pipe(
       map((resp: any) => {
 
-        this.guardarDatosEnStorage(resp.id, resp.token, resp.usuario);
+        this.guardarDatosEnStorage(resp.id, resp.token, resp.menu);
 
         const tipoUsuario = resp.usuario.rol;
-
         switch (tipoUsuario) {
           case 'ADMINISTRADOR':
             swal('Bienvenido ' + resp.usuario.nombre + ' ' + resp.usuario.apellido,
@@ -124,7 +129,7 @@ export class UsuarioService {
         return true;
       }),
       catchError((err) => {
-        swal('Uppss...' + err.error.mensaje, ' Existen campos obligatorios vacíos', 'error');
+        swal('Uppss...',  err.error.mensaje, 'error');
         return throwError(err.error.mensaje);
       })
     );
@@ -138,7 +143,7 @@ export class UsuarioService {
 
       if (usuario._id === this.usuario._id) {
         const usuarioDB = resp.usuario;
-        this.guardarDatosEnStorage(usuarioDB._id, this.token, usuarioDB);
+        this.guardarDatosEnStorage(usuarioDB._id, this.token, this.menu);
       }
 
       return true;
@@ -156,13 +161,21 @@ export class UsuarioService {
       }));
   }
 
+  desactivarUsuario(usuario: Usuario) {
+    let url = URL_SERVICIOS + '/desactivarusuario/' + usuario._id;
+    url += '?token=' + this.token;
+
+    return this.http.put(url, usuario)
+      .pipe(map((resp: any) => resp.usuario));
+  }
+
   actualizarImagen(archivo: File, id: string) {
 
     this.servicioSubirArchivo.subirArchivo(archivo, 'usuarios', id)
       .then((resp: any) => {
         this.usuario.imagen = resp.usuario.imagen;
         swal('Imagen actualizada', 'Se ha actualizado su foto de perfil', 'success');
-        this.guardarDatosEnStorage(id, this.token, this.usuario);
+        this.guardarDatosEnStorage(id, this.token, this.menu);
       })
       .catch(resp => {
        console.log(resp);
@@ -214,7 +227,7 @@ export class UsuarioService {
     return this.http.put(url, usuario).pipe(map((resp: any) => {
       swal('Contraseña actualizada', 'Se ha actualizado su contraseña', 'success');
       const usuarioDB = resp.usuario;
-      this.guardarDatosEnStorage(usuarioDB._id, this.token, usuarioDB);
+      this.guardarDatosEnStorage(usuarioDB._id, this.token, this.menu);
       return true;
     }),
     catchError((err) => {

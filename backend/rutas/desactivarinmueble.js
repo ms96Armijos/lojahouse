@@ -5,7 +5,7 @@ let app = express();
 let Inmueble = require("../modelos/inmueble");
 
 //ACTUALIZAR UN NUEVO INMUEBLE
-app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
+app.put("/:id", [mdwareAutenticacion.verificaToken], (req, res) => {
     let id = req.params.id;
     let body = req.body;
   
@@ -28,7 +28,6 @@ app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
   
       inmueble.publicado = body.publicado;
       inmueble.estado = body.estado;
-      inmueble.usuario = req.usuario._id;
   
   
       inmueble.save((err, inmuebleGuardado) => {

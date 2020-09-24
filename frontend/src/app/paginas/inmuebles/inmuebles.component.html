@@ -34,7 +34,7 @@
                       <p class="card-text text-right">$ {{inmueble.precioalquiler}}</p>
 
 
-                      <button (click)="publicarInmueble( inmueble )"  [ngStyle]="{'background-color':inmueble.publicado == 'PUBLICO'? 'green':'red'}"  class="btn btn-outline-light btn-rounded">
+                      <button (click)="publicarInmueble( inmueble )"  [ngStyle]="{'background-color':inmueble.publicado == 'PUBLICO'? 'green':'red'}"  class="btn btn-block btn-outline-light btn-rounded">
                         {{inmueble.publicado == 'PUBLICO' ? 'Publicado' : 'Publicar'}}</button>
 
 
@@ -43,11 +43,17 @@
                    <!-- <button [routerLink]="['/alquilar', inmueble._id]" class="btn btn-primary"><abbr title="Generar contrato"><i
                       class="fa fa-book"></i></abbr></button>-->
 
-                    <button [routerLink]="['/crearinmueble', inmueble._id]" class="btn btn-primary  m-l-5"><abbr title="Editar inmueble"><i
-                      class="fa fa-save"></i></abbr></button>
+                      <div class="row">
+                        <div class="col-6">
+                          <button [routerLink]="['/crearinmueble', inmueble._id]" class="btn btn-block btn-primary  m-l-5"><abbr title="Editar inmueble"><i
+                            class="fa fa-save"></i></abbr></button>
+                        </div>
+                        <div class="col-6">
+                          <button (click)="borrarInmueble(inmueble)" class="btn btn-block btn-danger  m-l-5"><abbr title="Eliminar inmueble"><i
+                            class="fa fa-trash"></i></abbr></button>
+                        </div>
+                      </div>
 
-                    <button (click)="borrarInmueble(inmueble)" class="btn btn-danger  m-l-5"><abbr title="Eliminar inmueble"><i
-                      class="fa fa-trash"></i></abbr></button>
                   </div>
                 </div>
               </div>

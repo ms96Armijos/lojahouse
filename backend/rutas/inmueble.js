@@ -4,7 +4,9 @@ let mdwareAutenticacion = require('../middlewares/autenticacion');
 let app = express();
 
 let Inmueble = require("../modelos/inmueble");
+
 const { populate } = require("../modelos/inmueble");
+const usuario = require("../modelos/usuario");
 
 //OBTENER TODOS LOS USUARIOS
 app.get("/allinmuebles/:desde", mdwareAutenticacion.verificaToken, (req, res, next) => {
@@ -14,46 +16,107 @@ app.get("/allinmuebles/:desde", mdwareAutenticacion.verificaToken, (req, res, ne
   let desde = req.params.desde;
   desde = Number(desde);
 
-  Inmueble.find({usuario: req.usuario._id})
-  .populate('usuario', 'nombre correo')
-    .skip(desde)
-    .limit(6)
-    .exec((err, inmuebles) => {
-      if (err) {
-        return res.status(500).json({
-          ok: false,
-          mensaje: "Error cargando inmueble",
-          errors: err,
-        });
-      }
-
-      Inmueble.countDocuments({usuario: req.usuario._id}, (err, conteo) => {
-
+  if(req.usuario.rol ==  'ARRENDADOR'){
+    Inmueble.find({usuario: req.usuario._id})
+    .populate('usuario', 'nombre correo rol')
+      .skip(desde)
+      .limit(6)
+      .exec((err, inmuebles) => {
         if (err) {
           return res.status(500).json({
             ok: false,
-            mensaje: "Error contando usuarios",
+            mensaje: "Error cargando inmueble",
             errors: err,
           });
         }
-
-        res.status(200).json({
-          ok: true,
-          inmuebles: inmuebles,
-          total: conteo
+  
+        Inmueble.countDocuments({usuario: req.usuario._id}, (err, conteo) => {
+  
+          if (err) {
+            return res.status(500).json({
+              ok: false,
+              mensaje: "Error contando usuarios",
+              errors: err,
+            });
+          }
+          
+          /*inmuebles.forEach(dataInmueble => {
+            console.log('userInm= '+dataInmueble.usuario.rol+'\n'+'user= '+req.usuario.rol)
+            let inmuebleUser = dataInmueble.usuario.rol;
+            let logueado = req.usuario.rol;
+         if(logueado == 'ADMINISTRADOR' || logueado == 'ARRENDADOR'){
+            console.log('Usuario coincide: '+req.usuario.rol)
+         }
+          });*/
+          
+         res.status(200).json({
+           ok: true,
+           inmuebles: inmuebles,
+           total: conteo
+         });
+          
         });
+  
+  
       });
+  }
+  if(req.usuario.rol ==  'ADMINISTRADOR'){
+    Inmueble.find({})
+    .populate('usuario', 'nombre correo rol')
+      .skip(desde)
+      .limit(6)
+      .exec((err, inmuebles) => {
+        if (err) {
+          return res.status(500).json({
+            ok: false,
+            mensaje: "Error cargando inmueble",
+            errors: err,
+          });
+        }
+  
+        Inmueble.countDocuments({}, (err, conteo) => {
+  
+          if (err) {
+            return res.status(500).json({
+              ok: false,
+              mensaje: "Error contando usuarios",
+              errors: err,
+            });
+          }
+          
+          /*inmuebles.forEach(dataInmueble => {
+            console.log('userInm= '+dataInmueble.usuario.rol+'\n'+'user= '+req.usuario.rol)
+            let inmuebleUser = dataInmueble.usuario.rol;
+            let logueado = req.usuario.rol;
+         if(logueado == 'ADMINISTRADOR' || logueado == 'ARRENDADOR'){
+            console.log('Usuario coincide: '+req.usuario.rol)
+         }
+          });*/
+          
+         res.status(200).json({
+           ok: true,
+           inmuebles: inmuebles,
+           total: conteo
+         });
+          
+        });
+  
+  
+      });
+  }
+    
+    
 
-
-    });
 });
 
 
 //OBTENER UN INMUEBLE ESPECIFICO
-app.get('/:id', mdwareAutenticacion.verificaToken, (req, res) => {
+app.get('/:id', [mdwareAutenticacion.verificaToken], (req, res) => {
   let id = req.params.id;
+
+  
   Inmueble.findById(id)
-    .populate('usuario', 'nombre imagen correo')
+    .populate('usuario', 'nombre imagen correo estado rol')
     .exec((err, inmueble) => {
       if (err) {
         return res.status(500).json({
@@ -79,11 +142,15 @@ app.get('/:id', mdwareAutenticacion.verificaToken, (req, res) => {
 
 
 //ACTUALIZAR UN NUEVO INMUEBLE
-app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
+app.put("/:id", [mdwareAutenticacion.verificaToken, mdwareAutenticacion.actualizarSoloElMismoArrendador], async (req, res) => {
   let id = req.params.id;
   let body = req.body;
 
-  Inmueble.findById(id, (err, inmueble) => {
+  if(req.inmueble.usuario == req.usuario._id){
+    console.log('has llegado')
+  }
+
+  await Inmueble.findById(id, async (err, inmueble) => {
     if (err) {
       return res.status(500).json({
         ok: false,
@@ -113,7 +180,7 @@ app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
     inmueble.usuario = body.usuario;
 
 
-    inmueble.save((err, inmuebleGuardado) => {
+    await inmueble.save((err, inmuebleGuardado) => {
       if (err) {
         return res.status(400).json({
           ok: false,
@@ -167,7 +234,7 @@ app.post("/", mdwareAutenticacion.verificaToken, (req, res) => {
 });
 
 //ELIMINAR UN USUARIO
-app.delete("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
+app.delete("/:id", [mdwareAutenticacion.verificaToken, mdwareAutenticacion.actualizarSoloElMismoArrendador], (req, res) => {
   let id = req.params.id;
 
   Inmueble.findByIdAndRemove(id, (err, inmuebleBorrado) => {

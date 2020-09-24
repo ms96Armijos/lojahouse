@@ -31,6 +31,7 @@ import { InmuebleComponent } from './alquilar/inmueble/inmueble.component';
 import { CrearvisitaComponent } from './visitas/crearvisita/crearvisita/crearvisita.component';
 import { VisitasolicitadaComponent } from './visitas/visitasolicitada/visitasolicitada.component';
 import { PublicadosComponent } from './alquilar/publicados/publicados.component';
+import { ContratoarrendatarioComponent } from './contrato/contratoarrendatario/contratoarrendatario.component';
 
 
 @NgModule({
@@ -53,6 +54,7 @@ import { PublicadosComponent } from './alquilar/publicados/publicados.component'
     CrearvisitaComponent,
     VisitasolicitadaComponent,
     PublicadosComponent,
+    ContratoarrendatarioComponent,
   ],
   exports: [
     DashboardComponent,

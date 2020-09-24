@@ -1,8 +1,6 @@
 let mongoose = require('mongoose');
 
 let Schema = mongoose.Schema;
-let inmueble = mongoose.model('Inmueble');
-let usuario = mongoose.model('Usuario');
 
 let estadosValidos = {
     values: ['ACEPTADA', 'RECHAZADA', 'PENDIENTE'],

@@ -21,7 +21,7 @@ export class VervisitasarrendatarioComponent implements OnInit {
         let id = parametros['id'];
 
         if(id !== 'nuevo'){
-          this.obtenerVisita(id);
+          this.obtenerVisitaArrendatario(id);
         }
       });
     }
@@ -30,8 +30,8 @@ export class VervisitasarrendatarioComponent implements OnInit {
       init_plugins();
     }
 
-    obtenerVisita(id: string){
-      this._visitaService.obtenerVisita( id )
+    obtenerVisitaArrendatario(id: string){
+      this._visitaService.obtenerVisitaArrendatario( id )
       .subscribe( visita => {
 
         this.visitas = visita;

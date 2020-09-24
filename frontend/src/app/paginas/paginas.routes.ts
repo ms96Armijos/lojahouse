@@ -1,3 +1,7 @@
+import { ArrendadorGuard } from './../services/guards/arrendador.guard';
+import { Pagina403Component } from './../shared/pagina403/pagina403.component';
+import { AdminGuard } from './../services/service.index';
+import { ContratoarrendatarioComponent } from './contrato/contratoarrendatario/contratoarrendatario.component';
 import { PublicadosComponent } from '../paginas/alquilar/publicados/publicados.component';
 import { VervisitasarrendatarioComponent } from './visitas/vervisitasArrendatario/vervisitasarrendatario.component';
 import { VisitasolicitadaComponent } from './visitas/visitasolicitada/visitasolicitada.component';
@@ -20,6 +24,7 @@ import { RouterModule, Routes, CanActivate } from '@angular/router';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PaginasComponent } from './paginas.component';
+import { UsuarioactivoGuard } from '../services/guards/usuarioactivo.guard';
 
 
 
@@ -30,7 +35,7 @@ const paginasRoutes: Routes = [
     canActivate: [LoginGuardGuard],
     children: [
       { path: 'dashboard', component: DashboardComponent, data: {titulo: 'ARRENDADOR'} },
-      { path: 'inmuebles', component: InmueblesComponent, data: {titulo: 'Gestión de Inmuebles'} },
+      { path: 'inmuebles', component: InmueblesComponent,  data: {titulo: 'Gestión de Inmuebles'} },
       { path: 'crearinmueble/:id', component: CrearinmuebleComponent, data: {titulo: 'Crear Inmueble'} },
       { path: 'perfil', component: PerfilComponent, data: {titulo: 'Perfil de usuario'} },
       { path: 'cambiarpassword', component: RecuperarpasswordComponent, data: {titulo: 'Cambiar Contraseña'} },
@@ -40,6 +45,10 @@ const paginasRoutes: Routes = [
       { path: 'plantillacontrato/:id', component: PlantillaComponent, data: {titulo: 'Plantilla contrato'} },
       { path: 'vercontrato', component: VercontratosComponent, data: {titulo: 'Lista de contratos'} },
       { path: 'alquilar/:id', component: InmuebleComponent, data: {titulo: 'Alquilar un inmueble'} },
+      { path: 'contratoarrendatario', component: ContratoarrendatarioComponent, data: {titulo: 'Contratos'} },
+
+      { path: 'noautorizado', component: Pagina403Component, data: {titulo: 'No autorizado'} },
+
 
       { path: 'publicados', component: PublicadosComponent, data: {titulo: 'Inmuebles pulicados'} },
 
@@ -50,9 +59,9 @@ const paginasRoutes: Routes = [
 
 
       //CONFIGURACIONES:
-      { path: 'usuarios', component: UsuariosComponent, data: {titulo: 'Configuración de usuario'} },
-      { path: 'servicios', component: ServiciosbasicosComponent, data: {titulo: 'Configuración de servicios'} },
-      { path: 'servicio/:id', component: CrearservicioComponent, data: {titulo: 'Crear servicios'} },
+      { path: 'usuarios', component: UsuariosComponent, canActivate: [AdminGuard], data: {titulo: 'Configuración de usuario'} },
+      { path: 'servicios', component: ServiciosbasicosComponent, canActivate: [AdminGuard], data: {titulo: 'Configuración de servicios'} },
+      { path: 'servicio/:id', component: CrearservicioComponent, canActivate: [AdminGuard], data: {titulo: 'Crear servicios'} },
       { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
     ]
   }

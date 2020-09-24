@@ -45,15 +45,12 @@ export class InmuebleComponent implements OnInit {
   }
 
   obtenerInmueble(id: string) {
-
-
     this._inmuebleService.obtenerInmueble(id)
       .subscribe(inmueble => {
         this.inmuebles = inmueble;
         //console.log(this.inmuebles);
 
       });
-
   }
 
   registrarArrendatario(forma: NgForm) {

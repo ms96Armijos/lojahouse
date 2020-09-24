@@ -13,6 +13,7 @@ app.get("/coleccion/:tabla/:busqueda", mdwareAutenticacion.verificaToken, (req, 
   let tabla = req.params.tabla;
   let expresionRegular = new RegExp(busqueda, "i");
   let auth = req.usuario._id;
+  let rol = req.usuario.rol;
 
   let promesa;
 
@@ -24,7 +25,7 @@ app.get("/coleccion/:tabla/:busqueda", mdwareAutenticacion.verificaToken, (req, 
       promesa = buscarVisitas(busqueda, expresionRegular, auth);
       break;
     case "inmuebles":
-      promesa = buscarInmuebles(busqueda, expresionRegular, auth);
+      promesa = buscarInmuebles(busqueda, expresionRegular, auth, rol);
       break;
 
     case "servicios":
@@ -61,7 +62,7 @@ app.get("/todo/:busqueda", (req, res, next) => {
   let expresionRegular = new RegExp(busqueda, "i");
 
   Promise.all([
-    buscarInmuebles(busqueda, expresionRegular, auth),
+    buscarInmuebles(busqueda, expresionRegular, auth, rol),
     buscarVisitas(busqueda, expresionRegular, auth),
     buscarUsuarios(busqueda, expresionRegular),
     buscarServicios(busqueda, expresionRegular, auth),
@@ -84,9 +85,12 @@ app.get("/todo/:busqueda", (req, res, next) => {
     });
 });
 
-function buscarInmuebles(busqueda, expresionRegular, auth) {
+function buscarInmuebles(busqueda, expresionRegular, auth, rol) {
   return new Promise((resolve, reject) => {
-    Inmueble.find({ nombre: expresionRegular, usuario: auth})
+    
+    if(rol == 'ARRENDADOR'){
+      console.log('arr')
+      Inmueble.find({ nombre: expresionRegular, usuario: auth})
       .populate("usuario", "nombre apellido correo")
       .exec((err, inmuebles) => {
         if (err) {
@@ -95,6 +99,19 @@ function buscarInmuebles(busqueda, expresionRegular, auth) {
           resolve(inmuebles);
         }
       });
+    }
+    if(rol == 'ADMINISTRADOR'){
+      console.log('adm')
+      Inmueble.find({ nombre: expresionRegular})
+      .populate("usuario", "nombre apellido correo")
+      .exec((err, inmuebles) => {
+        if (err) {
+          reject("Error al cargar Inmuebles", err);
+        } else {
+          resolve(inmuebles);
+        }
+      });
+    }
   });
 }
 

@@ -4,15 +4,17 @@ let mongoose = require("mongoose");
 let cors = require('cors');
 mongoose.set('useCreateIndex', true);
 const morgan = require('morgan');
+const helmet = require('helmet');
 
 
 
 //INICIALIZANDO VARIABLES
 let app = express();
 
+
 //CORS
 app.use(cors());
-
+app.use(helmet());
 
 
 //middleware body-parser desde express
@@ -34,6 +36,8 @@ let contratoRutas = require('./rutas/contrato');
 let inmueblePublico = require('./rutas/inmueblepublico');
 let usuario_visitas_solicitada = require('./rutas/usuario_visitas_solicitadas');
 let inmueble_publicado = require('./rutas/inmueble_publicado');
+let contrato_arrendatario = require('./rutas/contratos_arrendatario');
+let desactivarUsuario = require('./rutas/desactivarusuario');
 
 let enviarmensajes = require('./rutas/enviarmensajes');
 
@@ -61,15 +65,18 @@ mongoose.connection.openUri("mongodb://localhost/lojahouseDB",
 //RUTAS
 app.use('/usuario', usuarioRutas);
 app.use('/inmueble', inmuebleRutas);
-app.use('/inmueblepublico', inmueblePublico);
 app.use('/servicio', servicioRutas);
 app.use('/contrato', contratoRutas);
+app.use('/visita', visitaRutas);
+
+app.use('/inmueblepublico', inmueblePublico);
 app.use('/visitasolicitada', usuario_visitas_solicitada);
 app.use('/inmueblepublicado', inmueble_publicado);
+app.use('/contratoarrendatario',contrato_arrendatario);
+app.use('/desactivarusuario', desactivarUsuario);
 
 app.use('/mensaje',enviarmensajes);
 
-app.use('/visita', visitaRutas);
 app.use('/login', loginRutas);
 app.use('/password', cambiarPassword);
 app.use('/resetpassword', reseteoPassword);

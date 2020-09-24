@@ -97,7 +97,7 @@ export class UsuariosComponent implements OnInit {
 
   }*/
 
-  guardarUsuario(usuario: Usuario) {
+  desactivarUsuario(usuario: Usuario) {
 
     let estadoObtenido: string ;
 
@@ -124,7 +124,7 @@ export class UsuariosComponent implements OnInit {
           usuario.estado = '1';
         }
 
-        this._usuarioService.actualizarUsuario(usuario)
+        this._usuarioService.desactivarUsuario(usuario)
           .subscribe();
         this.toastr.success('Usuario ' + estadoObtenido);
       }

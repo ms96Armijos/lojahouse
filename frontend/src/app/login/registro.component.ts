@@ -32,7 +32,9 @@ export class RegistroComponent implements OnInit {
       return;
     }
 
-    if (forma.value.rol === "SELECCIONAR" || forma.value.rol === '') {
+    let rolSeleccionado = forma.value.rol;
+
+    if (rolSeleccionado === "SELECCIONAR" || rolSeleccionado.lenght <= 0 ) {
       swal.default('¡Importante!', 'Debe especificar quién eres', 'warning');
       return;
     }

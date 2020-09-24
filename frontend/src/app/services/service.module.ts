@@ -2,7 +2,8 @@ import { InmueblesService } from '../services/service.index';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { SharedService, SidebarService, UsuarioService, LoginGuardGuard, SubirArchivoService, ServiciosbasicosService } from './service.index';
+import { SharedService, SidebarService, UsuarioService, LoginGuardGuard, AdminGuard, ArrendadorGuard,
+   SubirArchivoService, ServiciosbasicosService } from './service.index';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
@@ -16,6 +17,8 @@ import { HttpClientModule } from '@angular/common/http';
     SidebarService,
     UsuarioService,
     LoginGuardGuard,
+    AdminGuard,
+    ArrendadorGuard,
     SubirArchivoService,
     InmueblesService,
     ServiciosbasicosService

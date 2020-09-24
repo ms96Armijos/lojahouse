@@ -1,17 +1,16 @@
 let express = require("express");
 let bcrypt = require("bcryptjs");
 let generarPassword = require("generate-password");
-let nodemailer = require('nodemailer');
-let jwt = require('jsonwebtoken');
-let mdwareAutenticacion = require('../middlewares/autenticacion');
+let nodemailer = require("nodemailer");
+let jwt = require("jsonwebtoken");
+let mdwareAutenticacion = require("../middlewares/autenticacion");
 
 let app = express();
 
 let Usuario = require("../modelos/usuario");
 
 //OBTENER TODOS LOS USUARIOS
-app.get("/", (req, res, next) => {
-
+app.get("/",(req, res, next) => {
   let desde = req.query.desde || 0;
   desde = Number(desde);
 
@@ -28,7 +27,6 @@ app.get("/", (req, res, next) => {
       }
 
       Usuario.countDocuments({}, (err, conteo) => {
-
         if (err) {
           return res.status(500).json({
             ok: false,
@@ -40,44 +38,53 @@ app.get("/", (req, res, next) => {
         res.status(200).json({
           ok: true,
           usuarios: usuarios,
-          total: conteo
+          total: conteo,
         });
       });
     });
 });
 
 //OBTENER UN SERVICIO ESPECIFICO
-app.get('/:id', (req, res) => {
+app.get("/:id", (req, res) => {
   let id = req.params.id;
-  Usuario.findById(id, "nombre apellido correo imagen movil estado rol")
-    .exec((err, usuario) => {
-      if (err) {
-        return res.status(500).json({
-          ok: false,
-          mensaje: 'Error al buscar usuario',
-          errors: err
-        });
-      }
-      if (!usuario) {
-        return res.status(400).json({
-          ok: false,
-          mensaje: 'El usuario con el id: ' + id + ' no existe',
-          errors: { message: 'No existe el usuario con ese ID' }
-        });
-      }
+  Usuario.findById(
+    id,
+    "nombre apellido correo imagen movil estado rol"
+  ).exec((err, usuario) => {
+    if (err) {
+      return res.status(500).json({
+        ok: false,
+        mensaje: "Error al buscar usuario",
+        errors: err,
+      });
+    }
+    if (!usuario) {
+      return res.status(400).json({
+        ok: false,
+        mensaje: "El usuario con el id: " + id + " no existe",
+        errors: { message: "No existe el usuario con ese ID" },
+      });
+    }
 
-      res.status(200).json({
-        ok: true,
-        usuario: usuario
-      })
-    })
+    res.status(200).json({
+      ok: true,
+      usuario: usuario,
+    });
+  });
 });
 
-
 //ACTUALIZAR UN USUARIO
-app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
+app.put("/:id",[ mdwareAutenticacion.verificaToken, mdwareAutenticacion.verificaMismoUsuarioRol], (req, res) => {
   let id = req.params.id;
-  const { nombre, apellido, correo, cedula, movil, convencional, estado } = req.body;
+  const {
+    nombre,
+    apellido,
+    correo,
+    cedula,
+    movil,
+    convencional,
+    estado,
+  } = req.body;
 
   Usuario.findById(id, (err, usuario) => {
     if (err) {
@@ -104,9 +111,7 @@ app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
     usuario.convencional = convencional;
     usuario.estado = estado;
 
-
     usuario.save((err, usuarioGuardado) => {
-
       if (err) {
         return res.status(400).json({
           ok: false,
@@ -124,8 +129,44 @@ app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
 });
 
 //CREAR UN NUEVO USUARIO
-app.post("/", (req, res) => {
-  let body = req.body;
+app.post("/", async (req, res) => {
+  const { nombre, apellido, correo, movil, estado, rol } = req.body;
+
+  if (nombre.length <= 0) {
+    return res.status(400).json({
+      ok: false,
+      mensaje: "Debe ingresar sus nombres",
+      errors: err,
+    });
+  }
+  if (apellido.length <= 0) {
+    return res.status(400).json({
+      ok: false,
+      mensaje: "Debe ingresar sus apellidos",
+      errors: err,
+    });
+  }
+  if (correo.length <= 0) {
+    return res.status(400).json({
+      ok: false,
+      mensaje: "Debe ingresar su correo",
+      errors: err,
+    });
+  }
+  if (movil.length <= 0) {
+    return res.status(400).json({
+      ok: false,
+      mensaje: "Debe ingresar su número de celular",
+      errors: err,
+    });
+  }
+  if (rol.length <= 0) {
+    return res.status(400).json({
+      ok: false,
+      mensaje: "Debes identificarte (arrendador o arrendatario)",
+      errors: err,
+    });
+  }
 
   let passwordGenerada = generarPassword.generate({
     length: 5,
@@ -133,26 +174,27 @@ app.post("/", (req, res) => {
   });
 
   let transporter = nodemailer.createTransport({
-    service: 'Gmail',
+    service: "Gmail",
     auth: {
-      user: 'testplagios@gmail.com',
-      pass: 'plagios123'
+      user: "testplagios@gmail.com",
+      pass: "plagios123",
     },
     debug: true, // show debug output
-    logger: true // log information in console
+    logger: true, // log information in console
   });
-
 
   // Definimos el email
   let mailOptions = {
-    from: 'testplagios@gmail.com',
-    to: body.correo,
-    subject: 'Generación de contraseña',
+    from: "testplagios@gmail.com",
+    to: correo,
+    subject: "Generación de contraseña",
     html: `
   <table border="0" cellpadding="0" cellspacing="0" width="600px" background-color="#2d3436" bgcolor="#2d3436">
     <tr height="200px">
       <td bgcolor="" width="600"px>
-        <h1 style="color: #fff; text-align:center">Bienvenido ${body.nombre + ' ' + body.apellido}</h1>
+        <h1 style="color: #fff; text-align:center">Bienvenido ${nombre +
+          " " +
+          apellido}</h1>
         <p style="color:#fff; text-align:center">
           <span style:"color: #e84393">Tu contraseña temporal es: ${passwordGenerada}</span>
         </p>
@@ -166,51 +208,64 @@ app.post("/", (req, res) => {
     </tr>
 
   </table>
-  `
+  `,
   };
 
   let usuario = new Usuario({
-    nombre: body.nombre,
-    apellido: body.apellido,
-    correo: body.correo,
+    nombre: nombre,
+    apellido: apellido,
+    correo: correo,
     password: bcrypt.hashSync(passwordGenerada, 10),
-    movil: body.movil,
+    movil: movil,
     /*imagen: body.imagen,
     cedula: body.cedula,
     
     convencional: body.convencional,*/
-    estado: body.estado,
-    rol: body.rol,
+    estado: estado,
+    rol: rol,
   });
 
-  console.log('contraseña: '+passwordGenerada);
-  usuario.save((err, usuarioGuardado) => {
-    if (err) {
+  console.log("contraseña: " + passwordGenerada);
+
+  await Usuario.findOne({ correo: usuario.correo }, (err, encontrado) => {
+    if (encontrado.correo === usuario.correo) {
       return res.status(400).json({
         ok: false,
-        mensaje: "Error al crear usuario",
-        errors: err,
+        mensaje: "Ya existe el usuario (correo electrónico)",
       });
-
     }
-  
-    // Enviamos el email
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        return console.log(error);
-         //return res.status(500).send(error.message);
-        //return res.send(500, error.message);
-      } else {
-        console.log("Correo Electrónico enviado satisfactoriamente: ", req.body.nombre);
-        return res.status(200).json(req.body);
-      }
-    });
-    
-    return res.status(201).json({
-      ok: true,
-      usuario: usuarioGuardado,
-    });
 
+    if (!encontrado) {
+      usuario.save((err, usuarioGuardado) => {
+        if (err) {
+          return res.status(400).json({
+            ok: false,
+            mensaje: "Error al crear usuario",
+            errors: err,
+          });
+        }
+
+        // Enviamos el email
+        transporter.sendMail(mailOptions, function(error, info) {
+          if (error) {
+            return console.log(error);
+            //return res.status(500).send(error.message);
+            //return res.send(500, error.message);
+          } else {
+            console.log(
+              "Correo Electrónico enviado satisfactoriamente: ",
+              req.body.nombre
+            );
+            return res.status(200).json(req.body);
+          }
+        });
+
+        return res.status(201).json({
+          ok: true,
+          usuario: usuarioGuardado,
+        });
+      });
+    }
   });
 });
 
@@ -242,7 +297,22 @@ app.delete("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
   });
 });
 
-
-
-
 module.exports = app;
+
+
+
+
+/*¿Cómo autorizar o denegar rutas en Node.JS si un usuario no cumple una condición?
+var User = require("../models/user").User;
+module.exports = function(req, res, next) {
+  User.findById(req.session.user_id, function(err, user) {
+    if (user.isAdmin == true) {
+      res.locals.user = user;
+      next();
+      console.log("Si tiene permisos de administrador");
+    } else if (user.isAdmin == false || user.isAdmin == null) {
+      res.redirect("/app");
+      console.log("No tiene permisos para acceder");
+    }
+  });
+};*/

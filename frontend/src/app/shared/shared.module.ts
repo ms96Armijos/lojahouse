@@ -7,6 +7,7 @@ import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { HeaderComponent } from './header/header.component';
 import { Pagina404Component } from './pagina404/pagina404.component';
+import { Pagina403Component } from './pagina403/pagina403.component';
 
 
 
@@ -18,12 +19,15 @@ import { Pagina404Component } from './pagina404/pagina404.component';
   ],
   declarations: [
     Pagina404Component,
+    Pagina403Component,
     HeaderComponent,
     SidebarComponent,
-    BreadcrumbsComponent
+    BreadcrumbsComponent,
+    Pagina403Component
   ],
   exports: [
     Pagina404Component,
+    Pagina403Component,
     HeaderComponent,
     SidebarComponent,
     BreadcrumbsComponent

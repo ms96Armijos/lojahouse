@@ -66,7 +66,7 @@
 
               </td>
               <td>
-                <button (click)="guardarUsuario( usuario )"  [ngStyle]="{'background-color':usuario.estado == 1 ? 'blue':'red'}"  class="btn btn-outline-light btn-rounded">
+                <button (click)="desactivarUsuario( usuario )"  [ngStyle]="{'background-color':usuario.estado == 1 ? 'blue':'red'}"  class="btn btn-outline-light btn-rounded">
                   {{usuario.estado == 0 ? 'ACTIVAR' : 'DESACTIVAR'}}</button>
 
                 <!-- <button (click)="borrarUsuario( usuario )" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>-->

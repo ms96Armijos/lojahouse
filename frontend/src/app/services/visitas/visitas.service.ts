@@ -61,6 +61,12 @@ export class VisitasService {
     return this.http.get(url).pipe(map((resp: any) => resp.visita));
   }
 
+  obtenerVisitaArrendatario(id: string){
+    let url = URL_SERVICIOS + '/visitasolicitada/visitas/' + id;
+    url += '?token=' + this._usuarioService.token;
+    return this.http.get(url).pipe(map((resp: any) => resp.visita));
+  }
+
   buscarVisitas(termino: string) {
     let url = URL_SERVICIOS + '/busqueda/coleccion/visitas/' + termino;
     url += '?token=' + this._usuarioService.token;

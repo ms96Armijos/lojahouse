@@ -52,8 +52,11 @@ app.get("/allcontratos/:desde", mdwareAutenticacion.verificaToken, (req, res, ne
 });
 
 //OBTENER UN INMUEBLE ESPECIFICO
-app.get('/:id', mdwareAutenticacion.verificaToken, (req, res) => {
+app.get('/:id', [mdwareAutenticacion.verificaToken], (req, res) => {
   let id = req.params.id;
+
+  console.log('contratos presente')
+
   Contrato.findById(id)
   .populate('usuarioarrendatario', 'nombre apellido correo cedula movil')
   .populate('usuarioarrendador', 'nombre apellido correo cedula movil')
@@ -83,7 +86,7 @@ app.get('/:id', mdwareAutenticacion.verificaToken, (req, res) => {
 
 
 //ACTUALIZAR UN NUEVA VISITA
-app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
+app.put("/:id", [mdwareAutenticacion.verificaToken], (req, res) => {
   let id = req.params.id;
   let body = req.body;
 
@@ -137,7 +140,6 @@ app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
 app.post("/", mdwareAutenticacion.verificaToken, (req, res) => {
   let body = req.body;
 
-  
   console.log(body.nombrecontrato)
   
   let contrato = new Contrato({

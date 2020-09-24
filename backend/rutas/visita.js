@@ -6,8 +6,10 @@ let app = express();
 let Visita = require("../modelos/visita");
 let Inmueble = require("../modelos/inmueble");
 
+let  Usuario = require("../modelos/usuario");
+
 //OBTENER TODOS LAS VISITA
-app.get("/allvisitas/:desde", mdwareAutenticacion.verificaToken, async (req, res, next) => {
+app.get("/allvisitas/:desde", [mdwareAutenticacion.verificaToken], async (req, res, next) => {
 
   /*let desde = req.query.desde || 0;
   desde = Number(desde);*/
@@ -16,7 +18,8 @@ app.get("/allvisitas/:desde", mdwareAutenticacion.verificaToken, async (req, res
   desde = Number(desde);
 
   const inmueble = await Inmueble.find({usuario: { $in: req.usuario._id}});
-    if(inmueble){
+
+  if(inmueble){
         const visita = await Visita.find({inmueble: { $in: inmueble}})  
         .populate('usuarioarrendatario', 'nombre apellido correo movil cedula')
         .populate('inmueble')
@@ -31,6 +34,7 @@ app.get("/allvisitas/:desde", mdwareAutenticacion.verificaToken, async (req, res
             });
           }
       
+          
         
             Visita.countDocuments({inmueble: { $in: inmueble}}, (err, conteo) => {
       
@@ -42,23 +46,16 @@ app.get("/allvisitas/:desde", mdwareAutenticacion.verificaToken, async (req, res
                 });
               }
         
-             
-        
+
               res.status(200).json({
                 ok: true,
                 visitas: visitas,
                 total: conteo
               });
-            });
-      
-      
-          
-      
-          
+            });   
         });
     }
    
-
   /*Visita.find({usuarioarrendatario: { $in: req.usuario._id}})
   .populate('usuarioarrendatario', 'nombre apellido correo movil cedula')
   .populate('inmueble')
@@ -86,26 +83,20 @@ app.get("/allvisitas/:desde", mdwareAutenticacion.verificaToken, async (req, res
             errors: err,
           });
         }
-  
-       
-  
         res.status(200).json({
           ok: true,
           visitas: visitas,
           total: conteo
         });
       });
-
-
-    
-
-    
   });*/
 });
 
 //OBTENER UN INMUEBLE ESPECIFICO
-app.get('/:id', mdwareAutenticacion.verificaToken, (req, res) => {
+app.get('/:id', [mdwareAutenticacion.verificaToken, mdwareAutenticacion.validarVisita], (req, res) => {
   let id = req.params.id;
+
+
   Visita.findById(id)
     .populate('usuarioarrendatario', 'nombre apellido correo movil cedula').populate('inmueble')
     .exec((err, visita) => {
@@ -179,7 +170,7 @@ app.put("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
 });
 
 //CREAR UN NUEVO VISITA
-app.post("/", mdwareAutenticacion.verificaToken, (req, res) => {
+app.post("/", [mdwareAutenticacion.verificaToken, mdwareAutenticacion.validarVisita], (req, res) => {
   let body = req.body;
 
   let visita = new Visita({
@@ -208,7 +199,7 @@ app.post("/", mdwareAutenticacion.verificaToken, (req, res) => {
 });
 
 //ELIMINAR UN VISITA
-app.delete("/:id", mdwareAutenticacion.verificaToken, (req, res) => {
+app.delete("/:id", [mdwareAutenticacion.verificaToken, mdwareAutenticacion.validarVisita], (req, res) => {
   let id = req.params.id;
 
   Visita.findByIdAndRemove(id, (err, visitaBorrado) => {

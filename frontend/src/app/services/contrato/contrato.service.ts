@@ -51,6 +51,19 @@ export class ContratoService {
       })
     );
   }
+
+  cargarContratosArrendatario(desde: number = 0) {
+    let url = URL_SERVICIOS + '/contratoarrendatario/desde=' + desde;
+    url += '?token=' + this._usuarioService.token;
+    return this.http.get(url).pipe(
+      map((resp: any) => {
+        this.totalContratos = resp.total;
+        this.contrato = resp.contratos;
+        return resp.contratos;
+      })
+    );
+  }
+
   obtenerContrato(id: string) {
     let url = URL_SERVICIOS + '/contrato/' + id;
     url += '?token=' + this._usuarioService.token;

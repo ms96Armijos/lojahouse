@@ -2,6 +2,8 @@ import { UsuarioService } from '../../services/service.index';
 import { Usuario } from './../../modelos/usuario.model';
 import { Component, OnInit } from '@angular/core';
 import swal from 'sweetalert';
+import decode from 'jwt-decode';
+
 
 @Component({
   selector: 'app-perfil',
@@ -17,10 +19,14 @@ export class PerfilComponent implements OnInit {
   imagenTemporal: string;
 
   constructor(public _usuarioService: UsuarioService) {
-    this.usuario = this._usuarioService.usuario;
+
   }
 
   ngOnInit(): void {
+    const token = localStorage.getItem('token');
+    const tokenPayload = decode(token);
+
+    this.usuario = tokenPayload.usuario;
   }
 
   ActualizarInformacionPerfil(usuario: Usuario) {
